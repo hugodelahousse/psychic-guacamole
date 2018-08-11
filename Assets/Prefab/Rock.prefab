@@ -100,7 +100,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pushSpeed: 50
-  grabbedSpeed: 1
+  grabbedSpeed: 3
   projectileLayer: 10
 --- !u!212 &212651714424174078
 SpriteRenderer:

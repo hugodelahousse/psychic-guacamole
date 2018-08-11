@@ -31,11 +31,9 @@ public class RockScript : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () {
 		if (currentState == state.HELD) {
+            Vector2 direction = (owner.grabbedRocksPosition.position - transform.position).normalized;
 			float distance = Vector2.Distance(transform.position, owner.grabbedRocksPosition.position);
-			if (distance > 2f) {
-				Vector2 direction = (owner.grabbedRocksPosition.position - transform.position).normalized;
-				rb2d.velocity = direction * grabbedSpeed * distance;
-			}
+            rb2d.velocity = direction * grabbedSpeed * distance;
 		}
 	}
 
