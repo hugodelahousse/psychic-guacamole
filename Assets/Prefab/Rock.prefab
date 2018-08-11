@@ -102,6 +102,8 @@ MonoBehaviour:
   pushSpeed: 50
   grabbedSpeed: 3
   projectileLayer: 10
+  highlighted: 1
+  highlightedColor: {r: 1, g: 0.45490196, b: 0.45490196, a: 0}
 --- !u!212 &212651714424174078
 SpriteRenderer:
   m_ObjectHideFlags: 1
