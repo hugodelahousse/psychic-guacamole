@@ -11,6 +11,21 @@ Prefab:
   m_SourcePrefab: {fileID: 0}
   m_RootGameObject: {fileID: 1905370455827948}
   m_IsPrefabAsset: 1
+--- !u!1 &1033330479282946
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4380944350516524}
+  m_Layer: 0
+  m_Name: RockFront
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1842223597102058
 GameObject:
   m_ObjectHideFlags: 0
@@ -58,6 +73,19 @@ Transform:
   m_Father: {fileID: 4476945711435220}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4380944350516524
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1033330479282946}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 2.5, y: -0.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4476945711435220}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4476945711435220
 Transform:
   m_ObjectHideFlags: 1
@@ -69,6 +97,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4170250721874796}
+  - {fileID: 4380944350516524}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -104,8 +133,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 1, y: -1}
-  m_Size: {x: 2, y: 2}
+  m_Offset: {x: 1, y: -1.2}
+  m_Size: {x: 0.96693075, y: 1.7}
   m_Direction: 0
 --- !u!114 &114896557756497232
 MonoBehaviour:
@@ -125,6 +154,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   groundChecker: {fileID: 4170250721874796}
+  rockFrontChecker: {fileID: 4380944350516524}
 --- !u!212 &212782045454106448
 SpriteRenderer:
   m_ObjectHideFlags: 1

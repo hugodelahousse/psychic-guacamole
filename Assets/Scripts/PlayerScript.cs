@@ -7,21 +7,25 @@ public class PlayerScript : MonoBehaviour {
 	enum state {
         UNDECIDED,
 	}
+
 	private state currentState = state.UNDECIDED;
     private Rigidbody2D rb2d;
-
-    public float speed;
-    public Vector2 maxSpeed;
-    public float jumpForce;
-
     private bool grounded = false;
-	private bool lastGrounded = false;
     private float lastJumpTime = 0;
 
+	private bool lastGrounded = false;
+
+	[Header("Movement settings")]
+    public float speed;
+    public Vector2 maxSpeed;
+	public float jumpForce;
+
 	private Animator anim;
-	
+
+    [Header("References")]
     public LayerMask groundLayer;
     public Transform groundChecker;
+    public Transform rockFrontChecker;
 
 	private bool stunned;
 
@@ -51,6 +55,16 @@ public class PlayerScript : MonoBehaviour {
 		rb2d.AddForce(new Vector2(0, moveVertical) * speed);
 		rb2d.velocity = stunned ? new Vector2(rb2d.velocity.x, rb2d.velocity.y) : new Vector2(moveHorizontal * speed, rb2d.velocity.y);
 
+        if(grounded && lastJumpTime + 0.1f < Time.time  && Input.GetButtonDown("Jump"))
+        {
+            moveVertical = jumpForce;
+            lastJumpTime = Time.time;
+        }
+
+        if (Input.GetButtonDown("Punch"))
+        {
+            Punch();
+        }
 
 		/*
         Vector2 movement = new Vector2(moveHorizontal, moveVertical);
@@ -61,5 +75,20 @@ public class PlayerScript : MonoBehaviour {
         );
 		*/
 	}
+
+
+    void Punch() {
+        Collider2D rockFront = Physics2D.OverlapCircle(rockFrontChecker.position, 0.25f, groundLayer);
+        if (rockFront)
+        {
+            RockScript rockScript = rockFront.GetComponent<RockScript>();
+            if (rockScript)
+            {
+                rockScript.getPushed(new Vector2(
+                    rockFront.transform.position.x > transform.position.x ? 1 : -1, 0
+                ));
+            }
+        }
+    }
 
 }
