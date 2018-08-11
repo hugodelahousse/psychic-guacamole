@@ -11,9 +11,11 @@ public class PlayerScript : MonoBehaviour {
     private state currentState = state.UNDECIDED;
     private Rigidbody2D rb2d;
     private bool grounded = false;
-    private float lastJumpTime = 0;
+	private bool lastGrounded = false;
+	private float lastJumpTime = 0;
 
-    private bool lastGrounded = false;
+	private SpriteRenderer sr;
+	private bool facingLeft = false;
 
     private RockScript grabbedRock = null;
 
@@ -25,7 +27,7 @@ public class PlayerScript : MonoBehaviour {
     private Animator anim;
 
     [Header("References")]
-        public LayerMask groundLayer;
+    public LayerMask groundLayer;
     public Transform groundChecker;
     public Transform rockFrontChecker;
     public Transform rockBackChecker;
@@ -36,34 +38,36 @@ public class PlayerScript : MonoBehaviour {
     // Use this for initialization
     void Start () {
         rb2d = GetComponent<Rigidbody2D>();
+		anim = GetComponent<Animator>();
+		sr = GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
-    void FixedUpdate() {
-
+    void FixedUpdate() {	
+	
         grounded = Physics2D.OverlapCircle(groundChecker.position, 0.25f, groundLayer);
-        if (lastGrounded == false && grounded == true) Debug.Log("landed"); // anim.SetTrigger("Landing");
+        if (lastGrounded == false && grounded == true) anim.SetTrigger("Landing");
         lastGrounded = grounded;
 
         float moveHorizontal = Input.GetAxisRaw("Horizontal");
-        //anim.SetFloat("Velocity", moveHorizontal);
+        if (grounded) anim.SetFloat("Velocity", Mathf.Abs(moveHorizontal));
+
+		if (moveHorizontal > 0) facingLeft = false;
+		else if (moveHorizontal < 0) facingLeft = true;
+
+		sr.flipX = facingLeft;
 
         float moveVertical = 0;
 
         if (grounded && lastJumpTime + 0.1f < Time.time && Input.GetButtonDown("Jump"))
         {
             moveVertical = jumpForce;
-            //anim.SetTrigger("Jump");
+			lastJumpTime = Time.time;
+			anim.SetTrigger("Jump");
         }
 
         rb2d.AddForce(new Vector2(0, moveVertical) * speed);
         rb2d.velocity = stunned ? new Vector2(rb2d.velocity.x, rb2d.velocity.y) : new Vector2(moveHorizontal * speed, rb2d.velocity.y);
-
-        if(grounded && lastJumpTime + 0.1f < Time.time && Input.GetButtonDown("Jump"))
-        {
-            moveVertical = jumpForce;
-            lastJumpTime = Time.time;
-        }
 
         if (Input.GetButtonDown("Punch"))
         {
