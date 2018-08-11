@@ -16,26 +16,37 @@ public class RockScript : MonoBehaviour {
 	public float pushSpeed;
 	public float grabbedSpeed;
 	public int projectileLayer;
+	public bool highlighted = false;
+	public Color highlightedColor;
 
+
+    private Color startColor;
 	private Rigidbody2D rb2d;
+	private SpriteRenderer renderer;
 
 	private PlayerScript owner;
 	private BoxCollider2D c2d;
 	// Use this for initialization
 
 	void Start () {
+		renderer = GetComponent<SpriteRenderer>();
 		c2d = GetComponent<BoxCollider2D>();
 		rb2d = GetComponent<Rigidbody2D>();
+		startColor = renderer.material.color;
 	}
 	
 	// Update is called once per frame
 	void FixedUpdate () {
+		if (highlighted) {
+			// Set highlighted
+		}
+		else {
+			// Set non hightlighted
+		}
 		if (currentState == state.HELD) {
+            Vector2 direction = (owner.grabbedRocksPosition.position - transform.position).normalized;
 			float distance = Vector2.Distance(transform.position, owner.grabbedRocksPosition.position);
-			if (distance > 2f) {
-				Vector2 direction = (owner.grabbedRocksPosition.position - transform.position).normalized;
-				rb2d.velocity = direction * grabbedSpeed * distance;
-			}
+            rb2d.velocity = direction * grabbedSpeed * distance;
 		}
 	}
 

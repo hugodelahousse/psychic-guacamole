@@ -25,12 +25,15 @@ public class PlayerScript : MonoBehaviour {
     public float jumpForce;
 
     private Animator anim;
+    private Vector2 aimingDirection;
+    private RockScript selectedRock = null;
+    private bool shouldGrab = false;
 
     [Header("References")]
     public LayerMask groundLayer;
     public Transform groundChecker;
-    public Transform rockFrontChecker;
-    public Transform rockBackChecker;
+
+    public Transform rayOrigin;
     public Transform grabbedRocksPosition;
 
     private bool stunned;
@@ -40,6 +43,7 @@ public class PlayerScript : MonoBehaviour {
         rb2d = GetComponent<Rigidbody2D>();
 		anim = GetComponent<Animator>();
 		sr = GetComponent<SpriteRenderer>();
+        getAimingDirection();
     }
 
     // Update is called once per frame
@@ -71,27 +75,18 @@ public class PlayerScript : MonoBehaviour {
 
         if (Input.GetButtonDown("Punch"))
         {
-            bool punched = Punch();
-            if (!punched)
+            if (shouldGrab)
                 Grab();
+            else
+                Punch();
         }
 
-        /*
-           Vector2 movement = new Vector2(moveHorizontal, moveVertical);
-           rb2d.AddForce(movement * speed);
-           rb2d.velocity = new Vector2(
-           Mathf.Min(maxSpeed.x, rb2d.velocity.x),
-           Mathf.Min(maxSpeed.y, rb2d.velocity.y)
-           );
-           */
+        getAimingDirection();
+        HighlightSelectedRock();
     }
 
     bool Grab() {
-        if (grabbedRock) return false;
-        Collider2D rockBack = Physics2D.OverlapCircle(rockBackChecker.position, 0.25f, groundLayer);
-        if (!rockBack) return false;
-
-        RockScript rockScript = rockBack.GetComponent<RockScript>();
+        RockScript rockScript = selectedRock;
         if (!rockScript) return false;
         if (rockScript.getGrabbed(this))
             grabbedRock = rockScript;
@@ -100,7 +95,47 @@ public class PlayerScript : MonoBehaviour {
     }
 
     Vector2 getAimingDirection() {
-        return Vector2.right;
+        Vector2 newDirection = new Vector2(Input.GetAxisRaw("Horizontal"),
+                                        Input.GetAxisRaw("Vertical"));
+        if (newDirection.magnitude > 0.2f)
+            aimingDirection = newDirection;
+
+        return aimingDirection;
+    }
+
+    void HighlightSelectedRock() {
+        RockScript script = null;
+        RaycastHit2D frontRayHit = Physics2D.Raycast(rayOrigin.position, aimingDirection, 2f, groundLayer);
+        if (frontRayHit) {
+            script = frontRayHit.collider.GetComponent<RockScript>();
+            if (script) {
+                setSelectedRock(script);
+                shouldGrab = false;
+                return;
+            }
+        }
+        RaycastHit2D backRayHit = Physics2D.Raycast(rayOrigin.position, -aimingDirection, 2f, groundLayer);
+        if (backRayHit) {
+            script = backRayHit.collider.GetComponent<RockScript>();
+            if (script) {
+                setSelectedRock(script);
+                shouldGrab = true;
+                return;
+            }
+        }
+        setSelectedRock(null);
+    }
+
+    void setSelectedRock(RockScript rock) {
+        if (rock == selectedRock)
+            return;
+        if (selectedRock)
+            selectedRock.highlighted = false;
+        if (rock)
+        {
+            selectedRock = rock;
+            selectedRock.highlighted = true;
+        }
     }
 
     bool Punch() {
@@ -111,9 +146,7 @@ public class PlayerScript : MonoBehaviour {
             grabbedRock = null;
         }
         else {
-            Collider2D rockFront = Physics2D.OverlapCircle(rockFrontChecker.position, 0.25f, groundLayer);
-            if (!rockFront) return false;
-            rockScript = rockFront.GetComponent<RockScript>();
+            rockScript = selectedRock;
         }
         if (!rockScript) return false;
         rockScript.getPushed(getAimingDirection());
