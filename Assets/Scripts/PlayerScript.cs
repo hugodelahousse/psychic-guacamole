@@ -15,7 +15,23 @@ public class PlayerScript : MonoBehaviour {
 	private float lastJumpTime = 0;
 
 	private SpriteRenderer sr;
-	private bool facingLeft = false;
+	private bool facingLeft_ = false;
+    private float grabbedRocksPositionX;
+
+    private bool facingLeft {
+        get {
+            return facingLeft_;
+        }
+        set {
+            facingLeft_ = value;
+            sr.flipX = value;
+            Debug.Log("Called");
+            grabbedRocksPosition.localPosition = new Vector2(
+                grabbedRocksPositionX * (value ? -1 : 1),
+                grabbedRocksPosition.localPosition.y 
+            );
+        }
+    }
 
     private RockScript grabbedRock = null;
 
@@ -46,12 +62,12 @@ public class PlayerScript : MonoBehaviour {
         rb2d = GetComponent<Rigidbody2D>();
 		anim = GetComponent<Animator>();
 		sr = GetComponent<SpriteRenderer>();
+        grabbedRocksPositionX = grabbedRocksPosition.localPosition.x;
         getAimingDirection();
     }
 
 	private void Update()
 	{
-		sr.flipX = facingLeft;
 
 		moveVertical = 0;
 
@@ -113,6 +129,11 @@ public class PlayerScript : MonoBehaviour {
     }
 
     void HighlightSelectedRock() {
+        if (grabbedRock)
+        {
+            setSelectedRock(null);
+            return;
+        }
         RockScript script = null;
         RaycastHit2D frontRayHit = Physics2D.Raycast(rayOrigin.position, aimingDirection, 2f, groundLayer);
         if (frontRayHit) {

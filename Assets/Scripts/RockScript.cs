@@ -60,7 +60,6 @@ public class RockScript : MonoBehaviour {
 
 	public void getPushed(Vector2 direction) {
 		this.currentState = state.PUSHED;
-		Debug.LogError(direction);
 		gameObject.layer = projectileLayer;
 		rb2d.bodyType = RigidbodyType2D.Dynamic;
 		rb2d.velocity = pushSpeed * direction;
@@ -76,7 +75,6 @@ public class RockScript : MonoBehaviour {
 		rb2d.bodyType = RigidbodyType2D.Dynamic;
 		reduceColliderSize();
 		owner = script;
-		Debug.LogError(script.grabbedRocksPosition.position);
 		c2d.isTrigger = true;
 
 		return true;
@@ -87,7 +85,6 @@ public class RockScript : MonoBehaviour {
 		if (currentState != state.PUSHED || timePushed + 0.01f > Time.time) {
 			return;
 		}
-        Debug.LogError(gameObject.name + " " + other.gameObject);
 		// Get destroyed
 		Instantiate(destroyParticles, transform.position, destroyParticles.transform.rotation);
         Destroy(gameObject);
