@@ -68,7 +68,7 @@ GameObject:
   - component: {fileID: 50806330591117342}
   - component: {fileID: 70940484308995138}
   - component: {fileID: 114896557756497232}
-  - component: {fileID: 95240594884208472}
+  - component: {fileID: 95158973285729666}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -83,7 +83,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1842223597102058}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1, y: -2, z: 0}
+  m_LocalPosition: {x: 0, y: -1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4476945711435220}
@@ -96,7 +96,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1234814343225412}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1, y: -0.65, z: 0}
+  m_LocalPosition: {x: 0, y: 0.48, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4476945711435220}
@@ -109,7 +109,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1332515494681038}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.91, y: 0, z: 0}
+  m_LocalPosition: {x: 1.875, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4476945711435220}
@@ -122,7 +122,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1905370455827948}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.08, z: 0}
+  m_LocalPosition: {x: -1.97, y: 0.5799999, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4170250721874796}
@@ -146,7 +146,7 @@ Rigidbody2D:
   m_LinearDrag: 2
   m_AngularDrag: 0.05
   m_GravityScale: 12
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: e39572e27a8d58d41a7f46b5adada98b, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
@@ -163,10 +163,10 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 1, y: -1.2}
-  m_Size: {x: 0.96693075, y: 1.7}
+  m_Offset: {x: -0.0123980045, y: -0.23231947}
+  m_Size: {x: 0.64358044, y: 1.5935862}
   m_Direction: 0
---- !u!95 &95240594884208472
+--- !u!95 &95158973285729666
 Animator:
   serializedVersion: 3
   m_ObjectHideFlags: 1
@@ -195,6 +195,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56927ed1007884ee98115de9f31bca97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerNumber: 1
+  stunTime: 0.1
   speed: 12
   maxSpeed: {x: 30, y: 30}
   jumpForce: 500
@@ -239,7 +241,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: f626c670843c546108966274da498c65, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 3ffb70e1dcf0948bf8d526cf044c679e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

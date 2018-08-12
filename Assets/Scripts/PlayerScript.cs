@@ -25,7 +25,6 @@ public class PlayerScript : MonoBehaviour {
         set {
             facingLeft_ = value;
             sr.flipX = value;
-            Debug.Log("Called");
             grabbedRocksPosition.localPosition = new Vector2(
                 grabbedRocksPositionX * (value ? -1 : 1),
                 grabbedRocksPosition.localPosition.y 
@@ -35,8 +34,14 @@ public class PlayerScript : MonoBehaviour {
 
     private RockScript grabbedRock = null;
 
+    [Header("Player settings")]
+    public int playerNumber = 1;
+
+    [Header("Combat settings")]
+    public float stunTime;
+
     [Header("Movement settings")]
-        public float speed;
+    public float speed;
     public Vector2 maxSpeed;
     public float jumpForce;
 
@@ -66,13 +71,16 @@ public class PlayerScript : MonoBehaviour {
         getAimingDirection();
     }
 
+    string getPlayerKey(string keyName) {
+        return string.Format("Player{0}{1}", playerNumber, keyName);
+    }
+
 	private void Update()
 	{
 
-        Debug.Log(Input.GetButton("Aim"));
 		moveVertical = 0;
 
-		if (grounded && lastJumpTime + 0.1f < Time.time && Input.GetButtonDown("Jump"))
+		if (grounded && lastJumpTime + 0.1f < Time.time && Input.GetButtonDown(getPlayerKey("Jump")))
 		{
 			moveVertical = jumpForce;
 			rb2d.AddForce(new Vector2(0, moveVertical) * speed);
@@ -81,7 +89,7 @@ public class PlayerScript : MonoBehaviour {
 
 		if (grounded) anim.SetFloat("Velocity", Mathf.Abs(moveHorizontal));
 
-		if (Input.GetButtonDown("Punch"))
+		if (Input.GetButtonDown(getPlayerKey("Punch")))
 		{
 			if (shouldGrab && !grabbedRock)
 				Grab();
@@ -98,15 +106,18 @@ public class PlayerScript : MonoBehaviour {
         if (lastGrounded == false && grounded == true) anim.SetTrigger("Landing");
         lastGrounded = grounded;
 
-        if (Input.GetButton("Aim"))
+        if (Input.GetButton(getPlayerKey("Aim")))
             moveHorizontal = 0;
         else
-            moveHorizontal = Input.GetAxisRaw("Horizontal");
+            moveHorizontal = Input.GetAxisRaw(getPlayerKey("Horizontal"));
 
         getAimingDirection();
         HighlightSelectedRock();
 
-        rb2d.velocity = stunned ? new Vector2(rb2d.velocity.x, rb2d.velocity.y) : new Vector2(moveHorizontal * speed, rb2d.velocity.y);
+        if (!stunned) {
+            rb2d.velocity = new Vector2(moveHorizontal * speed, rb2d.velocity.y);
+        }
+
 
     }
 
@@ -120,8 +131,8 @@ public class PlayerScript : MonoBehaviour {
     }
 
     Vector2 getAimingDirection() {
-        Vector2 newDirection = new Vector2(Input.GetAxisRaw("Horizontal"),
-                                        Input.GetAxisRaw("Vertical"));
+        Vector2 newDirection = new Vector2(Input.GetAxisRaw(getPlayerKey("Horizontal")),
+                                        Input.GetAxisRaw(getPlayerKey("Vertical")));
         if (newDirection.magnitude > 0.2f)
         {
             aimingDirection = newDirection.normalized;
@@ -184,6 +195,29 @@ public class PlayerScript : MonoBehaviour {
         if (!rockScript) return false;
         rockScript.getPushed(getAimingDirection());
         return true;
+    }
+
+    IEnumerator Stun() {
+        yield return new WaitForSeconds(stunTime);
+        stunned = false;
+    }
+
+    /// <summary>
+    /// Sent when an incoming collider makes contact with this object's
+    /// collider (2D physics only).
+    /// </summary>
+    /// <param name="other">The Collision2D data associated with this collision.</param>
+    void OnCollisionEnter2D(Collision2D other)
+    {
+        Debug.Log(other.gameObject);
+        RockScript rockScript = other.gameObject.GetComponent<RockScript>();
+        if (!rockScript)
+            return;
+        if (!stunned)
+        {
+            stunned = true;
+            StartCoroutine("Stun");
+        }
     }
 
 }
