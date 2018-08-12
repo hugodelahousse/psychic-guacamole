@@ -12,13 +12,13 @@ public class RockScript : MonoBehaviour {
 	private state currentState = state.FIXED;
 
 	private float timePushed = 0;
+	private bool highlighted_ = false;
 
 	public float pushSpeed;
 	public float grabbedSpeed;
 	public int projectileLayer;
-	public bool highlighted = false;
-	public Color highlightedColor;
 	public GameObject destroyParticles;
+	public SpriteRenderer selectorRenderer;
 
     private Color startColor;
 	private Rigidbody2D rb2d;
@@ -26,6 +26,15 @@ public class RockScript : MonoBehaviour {
 
 	private PlayerScript owner;
 	private BoxCollider2D c2d;
+	public bool highlighted {
+		get {
+			return highlighted_;
+		}
+		set {
+			selectorRenderer.enabled = value;
+			highlighted_ = value;
+		}
+	}
 	// Use this for initialization
 
 	void Start () {
@@ -37,12 +46,6 @@ public class RockScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-		if (highlighted) {
-			// Set highlighted
-		}
-		else {
-			// Set non hightlighted
-		}
 		if (currentState == state.HELD) {
             Vector2 direction = (owner.grabbedRocksPosition.position - transform.position).normalized;
 			float distance = Vector2.Distance(transform.position, owner.grabbedRocksPosition.position);
