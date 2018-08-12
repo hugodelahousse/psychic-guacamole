@@ -69,6 +69,7 @@ public class PlayerScript : MonoBehaviour {
 	private void Update()
 	{
 
+        Debug.Log(Input.GetButton("Aim"));
 		moveVertical = 0;
 
 		if (grounded && lastJumpTime + 0.1f < Time.time && Input.GetButtonDown("Jump"))
@@ -97,15 +98,16 @@ public class PlayerScript : MonoBehaviour {
         if (lastGrounded == false && grounded == true) anim.SetTrigger("Landing");
         lastGrounded = grounded;
 
-        moveHorizontal = Input.GetAxisRaw("Horizontal");
-
-		if (moveHorizontal > 0) facingLeft = false;
-		else if (moveHorizontal < 0) facingLeft = true;
-
-        rb2d.velocity = stunned ? new Vector2(rb2d.velocity.x, rb2d.velocity.y) : new Vector2(moveHorizontal * speed, rb2d.velocity.y);
+        if (Input.GetButton("Aim"))
+            moveHorizontal = 0;
+        else
+            moveHorizontal = Input.GetAxisRaw("Horizontal");
 
         getAimingDirection();
         HighlightSelectedRock();
+
+        rb2d.velocity = stunned ? new Vector2(rb2d.velocity.x, rb2d.velocity.y) : new Vector2(moveHorizontal * speed, rb2d.velocity.y);
+
     }
 
     bool Grab() {
@@ -121,9 +123,10 @@ public class PlayerScript : MonoBehaviour {
         Vector2 newDirection = new Vector2(Input.GetAxisRaw("Horizontal"),
                                         Input.GetAxisRaw("Vertical"));
         if (newDirection.magnitude > 0.2f)
+        {
             aimingDirection = newDirection.normalized;
-		else
-			aimingDirection = facingLeft ? new Vector2(-1, 0) : new Vector2(1, 0);
+            facingLeft = newDirection.x < 0;
+        }
 
         return aimingDirection;
     }
