@@ -104,6 +104,8 @@ MonoBehaviour:
   projectileLayer: 10
   highlighted: 1
   highlightedColor: {r: 1, g: 0.45490196, b: 0.45490196, a: 0}
+  destroyParticles: {fileID: 1031644160562676, guid: d1702681adb41a04790162652f1257bc,
+    type: 2}
 --- !u!212 &212651714424174078
 SpriteRenderer:
   m_ObjectHideFlags: 1

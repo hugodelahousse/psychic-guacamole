@@ -38,6 +38,9 @@ public class PlayerScript : MonoBehaviour {
 
     private bool stunned;
 
+	float moveVertical = 0;
+	float moveHorizontal = 0;
+
     // Use this for initialization
     void Start () {
         rb2d = GetComponent<Rigidbody2D>();
@@ -46,40 +49,44 @@ public class PlayerScript : MonoBehaviour {
         getAimingDirection();
     }
 
-    // Update is called once per frame
-    void FixedUpdate() {	
+	private void Update()
+	{
+		sr.flipX = facingLeft;
+
+		moveVertical = 0;
+
+		if (grounded && lastJumpTime + 0.1f < Time.time && Input.GetButtonDown("Jump"))
+		{
+			moveVertical = jumpForce;
+			rb2d.AddForce(new Vector2(0, moveVertical) * speed);
+			lastJumpTime = Time.time;
+		}
+
+		if (grounded) anim.SetFloat("Velocity", Mathf.Abs(moveHorizontal));
+
+		if (Input.GetButtonDown("Punch"))
+		{
+			if (shouldGrab && !grabbedRock)
+				Grab();
+			else
+				Punch();
+		}
+	}
+
+	// Update is called once per frame
+	void FixedUpdate() {	
 	
         grounded = Physics2D.OverlapCircle(groundChecker.position, 0.25f, groundLayer);
+		if (lastGrounded != grounded) anim.SetBool("Jump", lastGrounded);
         if (lastGrounded == false && grounded == true) anim.SetTrigger("Landing");
         lastGrounded = grounded;
 
-        float moveHorizontal = Input.GetAxisRaw("Horizontal");
-        if (grounded) anim.SetFloat("Velocity", Mathf.Abs(moveHorizontal));
+        moveHorizontal = Input.GetAxisRaw("Horizontal");
 
 		if (moveHorizontal > 0) facingLeft = false;
 		else if (moveHorizontal < 0) facingLeft = true;
 
-		sr.flipX = facingLeft;
-
-        float moveVertical = 0;
-
-        if (grounded && lastJumpTime + 0.1f < Time.time && Input.GetButtonDown("Jump"))
-        {
-            moveVertical = jumpForce;
-			lastJumpTime = Time.time;
-			anim.SetTrigger("Jump");
-        }
-
-        rb2d.AddForce(new Vector2(0, moveVertical) * speed);
         rb2d.velocity = stunned ? new Vector2(rb2d.velocity.x, rb2d.velocity.y) : new Vector2(moveHorizontal * speed, rb2d.velocity.y);
-
-        if (Input.GetButtonDown("Punch"))
-        {
-            if (shouldGrab)
-                Grab();
-            else
-                Punch();
-        }
 
         getAimingDirection();
         HighlightSelectedRock();
@@ -98,7 +105,9 @@ public class PlayerScript : MonoBehaviour {
         Vector2 newDirection = new Vector2(Input.GetAxisRaw("Horizontal"),
                                         Input.GetAxisRaw("Vertical"));
         if (newDirection.magnitude > 0.2f)
-            aimingDirection = newDirection;
+            aimingDirection = newDirection.normalized;
+		else
+			aimingDirection = facingLeft ? new Vector2(-1, 0) : new Vector2(1, 0);
 
         return aimingDirection;
     }
@@ -114,7 +123,7 @@ public class PlayerScript : MonoBehaviour {
                 return;
             }
         }
-        RaycastHit2D backRayHit = Physics2D.Raycast(rayOrigin.position, -aimingDirection, 2f, groundLayer);
+        RaycastHit2D backRayHit = Physics2D.Raycast(rayOrigin.position, -aimingDirection, 10f, groundLayer);
         if (backRayHit) {
             script = backRayHit.collider.GetComponent<RockScript>();
             if (script) {

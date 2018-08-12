@@ -18,7 +18,7 @@ public class RockScript : MonoBehaviour {
 	public int projectileLayer;
 	public bool highlighted = false;
 	public Color highlightedColor;
-
+	public GameObject destroyParticles;
 
     private Color startColor;
 	private Rigidbody2D rb2d;
@@ -57,7 +57,7 @@ public class RockScript : MonoBehaviour {
 
 	public void getPushed(Vector2 direction) {
 		this.currentState = state.PUSHED;
-		Debug.LogError(projectileLayer);
+		Debug.LogError(direction);
 		gameObject.layer = projectileLayer;
 		rb2d.bodyType = RigidbodyType2D.Dynamic;
 		rb2d.velocity = pushSpeed * direction;
@@ -85,7 +85,8 @@ public class RockScript : MonoBehaviour {
 			return;
 		}
         Debug.LogError(gameObject.name + " " + other.gameObject);
-        // Get destroyed
+		// Get destroyed
+		Instantiate(destroyParticles, transform.position, destroyParticles.transform.rotation);
         Destroy(gameObject);
 	}
 }
