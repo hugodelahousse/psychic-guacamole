@@ -89,6 +89,7 @@ public class PlayerScript : MonoBehaviour {
 		{
             doubleJumped = !grounded;
 			moveVertical = jumpForce;
+			rb2d.velocity = new Vector2(rb2d.velocity.x, 0);
 			rb2d.AddForce(new Vector2(0, moveVertical) * speed);
 			lastJumpTime = Time.time;
 		}

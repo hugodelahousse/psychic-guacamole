@@ -146,7 +146,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: b95c39aff6e2543b1af34cb7aa571a0d, type: 3}
   - {fileID: 21300000, guid: 1b2d54951b06a464681342bb6f677e9e, type: 3}
   - {fileID: 21300000, guid: 63b7f37200fe848a8bd2588bdfe59844, type: 3}
-  - {fileID: 21300000, guid: 59d010ab6b651408299e5970cc45362d, type: 3}
+  - {fileID: 21300000, guid: eefcd9f5b083d4074ac85a0d6089741e, type: 3}
   randomSprite: 1
   pushSpeed: 50
   grabbedSpeed: 3
