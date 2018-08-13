@@ -104,12 +104,17 @@ public class RockScript : MonoBehaviour {
 		Destroy(gameObject);
 	}
 
+
+
 	void OnCollisionEnter2D(Collision2D other)
 	{
 		if (currentState != state.PUSHED) {
 			return;
 		}
 		Debug.Log("Hit something: " + other.gameObject);
+		if (other.gameObject.CompareTag("Player")) {
+			FindObjectOfType<GameController>().freezeFrame();
+		}
 		// Get destroyed
 		Camera.main.GetComponent<CameraShake>().shake(isBig);
 		Instantiate(destroyParticles, transform.position, destroyParticles.transform.rotation);

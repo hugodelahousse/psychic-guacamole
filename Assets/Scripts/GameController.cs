@@ -61,6 +61,18 @@ public class GameController : MonoBehaviour {
         Camera.main.GetComponent<Camera2D>().AddFocus(F_Transform);
 	}
 
+	
+	IEnumerator FreezeFrame() {
+        Time.timeScale = 0.15f;
+        yield return new WaitForSecondsRealtime(0.6f);
+        Time.timeScale = 1;
+	}
+
+	public void freezeFrame() {
+		StartCoroutine("FreezeFrame");
+	}
+
+
 	public void onPlayerDie(int playerIndex) {
 		playerIndex = playerIndex - 1;
 		int otherPlayerIndex = (playerIndex + 1) % 2;
