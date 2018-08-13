@@ -12,6 +12,7 @@ public class GameController : MonoBehaviour {
 	public int[] playerLives;
 	public GameObject[] playerPrefab;
 	[SerializeField] string[] scenes;
+	[SerializeField] AudioClip respawnClip;
 
 	bool gameStarted = false;
 
@@ -51,6 +52,15 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
+	IEnumerator RespawnPlayer(int playerIndex) {
+        Vector2 spawn = findSpawnPoint();
+		AudioSource.PlayClipAtPoint(respawnClip, spawn, 1f);
+		yield return new WaitForSeconds(0.5f);
+        GameObject newPlayer = Instantiate(playerPrefab[playerIndex], spawn + Vector2.up * 2f, Quaternion.identity);
+        GameEye2D.Focus.F_Transform F_Transform = newPlayer.GetComponent<GameEye2D.Focus.F_Transform>();
+        Camera.main.GetComponent<Camera2D>().AddFocus(F_Transform);
+	}
+
 	public void onPlayerDie(int playerIndex) {
 		playerIndex = playerIndex - 1;
 		int otherPlayerIndex = (playerIndex + 1) % 2;
@@ -64,10 +74,7 @@ public class GameController : MonoBehaviour {
 		if (playerLives[playerIndex] == 0) {
 			GameObject.FindGameObjectWithTag("Winner").GetComponent<Image>().enabled = true;
 		} else {
-            Vector2 spawn = findSpawnPoint();
-            GameObject newPlayer = Instantiate(playerPrefab[playerIndex], spawn + Vector2.up * 2f, Quaternion.identity);
-            GameEye2D.Focus.F_Transform F_Transform = newPlayer.GetComponent<GameEye2D.Focus.F_Transform>();
-            Camera.main.GetComponent<Camera2D>().AddFocus(F_Transform);
+			StartCoroutine("RespawnPlayer", playerIndex);
 		}
 
 

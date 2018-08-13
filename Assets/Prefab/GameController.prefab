@@ -62,3 +62,4 @@ MonoBehaviour:
   - Scenes/Level 1
   - Scenes/Level 2
   - Scenes/Level 3
+  respawnClip: {fileID: 8300000, guid: 0ebd29e518d5f4464a9bdcc4ccb21a72, type: 3}
