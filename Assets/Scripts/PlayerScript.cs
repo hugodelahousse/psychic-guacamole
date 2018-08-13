@@ -123,11 +123,13 @@ public class PlayerScript : MonoBehaviour {
 
     bool Grab() {
         RockScript rockScript = selectedRock;
-        if (!rockScript) return false;
-        if (rockScript.getGrabbed(this))
-            grabbedRock = rockScript;
+        if (rockScript && rockScript.getGrabbed(this))
+        {
+           grabbedRock = rockScript;
+           return true;
+        }
 
-        return true;
+        return false;
     }
 
     Vector2 getAimingDirection() {
@@ -188,10 +190,10 @@ public class PlayerScript : MonoBehaviour {
         {
             rockScript = grabbedRock;
             grabbedRock = null;
-            setSelectedRock(null);
         }
         else {
             rockScript = selectedRock;
+            setSelectedRock(null);
         }
         if (!rockScript) return false;
         rockScript.getPushed(getAimingDirection());
