@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameController : MonoBehaviour {
 
@@ -50,12 +51,18 @@ public class GameController : MonoBehaviour {
 
 	public void onPlayerDie(int playerIndex) {
 		playerIndex = playerIndex - 1;
+		int otherPlayerIndex = (playerIndex + 1) % 2;
 		Debug.Log(string.Format("Lives: player1: {0}\tplayer2: {1}", playerLives[0], playerLives[1]));
         --playerLives[playerIndex];
-        Vector2 spawn = findSpawnPoint();
-        GameObject newPlayer = Instantiate(playerPrefab[playerIndex], spawn + Vector2.up * 2f, Quaternion.identity);
-		GameEye2D.Focus.F_Transform F_Transform = newPlayer.GetComponent<GameEye2D.Focus.F_Transform>();
-        Camera.main.GetComponent<Camera2D>().AddFocus(F_Transform);
+		if (playerLives[playerIndex] == 0) {
+			GameObject.FindGameObjectWithTag("Winner").GetComponent<Image>().enabled = true;
+		} else {
+            Vector2 spawn = findSpawnPoint();
+            GameObject newPlayer = Instantiate(playerPrefab[playerIndex], spawn + Vector2.up * 2f, Quaternion.identity);
+            GameEye2D.Focus.F_Transform F_Transform = newPlayer.GetComponent<GameEye2D.Focus.F_Transform>();
+            Camera.main.GetComponent<Camera2D>().AddFocus(F_Transform);
+		}
+
 
 		foreach (PlayerLives script in GameObject.FindObjectsOfType<PlayerLives>()) {
 			script.onPlayerLivesChange(playerLives);

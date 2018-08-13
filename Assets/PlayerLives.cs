@@ -18,7 +18,9 @@ public class PlayerLives : MonoBehaviour {
 		if (currentCount == newLives[playerNumber - 1])
 			return;
 		currentCount = newLives[playerNumber - 1];
-		if (currentCount >= 0 && currentCount < lifeSprites.Length)
+		if (currentCount > 0 && currentCount < lifeSprites.Length)
             image.sprite = lifeSprites[currentCount - 1];
+		else if (currentCount == 0)
+			image.enabled = false;
 	}
 }

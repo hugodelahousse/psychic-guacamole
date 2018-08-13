@@ -219,6 +219,15 @@ public class PlayerScript : MonoBehaviour {
     void OnCollisionEnter2D(Collision2D other)
     {
         //Debug.Log(other.gameObject + " " + gameObject.name);
+        if (other.gameObject.CompareTag("DeathCollider")) {
+            FindObjectOfType<GameController>().onPlayerDie(playerNumber);
+            if (gameObject)
+            {
+                Camera.main.GetComponent<Camera2D>().RemoveFocus(this.GetComponent<GameEye2D.Focus.F_Transform>());
+                Destroy(gameObject);
+            }
+            return;
+        }
         RockScript rockScript = other.gameObject.GetComponent<RockScript>();
         if (!rockScript || rockScript.currentState != RockScript.state.PUSHED)
             return;
@@ -228,14 +237,4 @@ public class PlayerScript : MonoBehaviour {
             StartCoroutine("Stun");
         }
     }
-    
-    private void OnBecameInvisible() {
-        FindObjectOfType<GameController>().onPlayerDie(playerNumber);
-        if (gameObject)
-        {
-            Camera.main.GetComponent<Camera2D>().RemoveFocus(this.GetComponent<GameEye2D.Focus.F_Transform>());
-            Destroy(gameObject);
-        }
-    }
-
 }
