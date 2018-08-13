@@ -99,7 +99,7 @@ public class RockScript : MonoBehaviour {
 
 	void OnCollisionEnter2D(Collision2D other)
 	{
-		if (currentState != state.PUSHED || timePushed + 0.01f > Time.time) {
+		if (currentState != state.PUSHED) {
 			return;
 		}
 		// Get destroyed

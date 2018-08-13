@@ -48,5 +48,9 @@ public class GameController : MonoBehaviour {
 		GameEye2D.Focus.F_Transform F_Transform = newPlayer.GetComponent<GameEye2D.Focus.F_Transform>();
         Camera.main.GetComponent<Camera2D>().AddFocus(F_Transform);
 
+		foreach (PlayerLives script in GameObject.FindObjectsOfType<PlayerLives>()) {
+			script.onPlayerLivesChange(playerLives);
+		}
+
 	}
 }
