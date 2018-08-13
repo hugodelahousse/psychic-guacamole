@@ -56,8 +56,12 @@ public class RockScript : MonoBehaviour {
 				Destroy(gameObject);
 				return;
 			}
-            Vector2 direction = (owner.grabbedRocksPosition.position - transform.position).normalized;
-			float distance = Vector2.Distance(transform.position, owner.grabbedRocksPosition.position);
+			
+			Vector3 centerPosition = c2d.offset;
+			centerPosition += transform.position;
+
+            Vector2 direction = (owner.grabbedRocksPosition.position - centerPosition).normalized;
+			float distance = Vector2.Distance(centerPosition, owner.grabbedRocksPosition.position);
             rb2d.velocity = direction * grabbedSpeed * distance;
 		}
 	}
