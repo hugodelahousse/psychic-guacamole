@@ -3675,6 +3675,12 @@ Prefab:
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 01ca3a0ae4ac841ec9ef96707b7cf399, type: 2}
   m_IsPrefabAsset: 0
+--- !u!114 &881511568 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114725110429718486, guid: ea86b75e1def14afc97195c6e24373ab,
+    type: 2}
+  m_PrefabInternal: {fileID: 2060157690}
+  m_Script: {fileID: 11500000, guid: 807f8d2bf0831224f8b2f509fa2f073f, type: 3}
 --- !u!1001 &884806868
 Prefab:
   m_ObjectHideFlags: 0
@@ -6345,7 +6351,7 @@ Prefab:
         type: 2}
       propertyPath: m_FocusList.Array.data[1]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 881511568}
     - target: {fileID: 20490573305231658, guid: 97ddc6b9b81db455aab03bf2df228daa,
         type: 2}
       propertyPath: orthographic size
