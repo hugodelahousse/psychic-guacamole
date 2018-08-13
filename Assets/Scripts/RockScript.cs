@@ -9,6 +9,7 @@ public class RockScript : MonoBehaviour {
 		HELD,
 		PUSHED,
 	}
+	[SerializeField] bool isBig;
 	public state currentState = state.FIXED;
 
 	private float timePushed = 0;
@@ -103,6 +104,7 @@ public class RockScript : MonoBehaviour {
 			return;
 		}
 		// Get destroyed
+		Camera.main.GetComponent<CameraShake>().shake(isBig);
 		Instantiate(destroyParticles, transform.position, destroyParticles.transform.rotation);
         Destroy(gameObject);
 	}

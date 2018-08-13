@@ -129,6 +129,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5f4048ae586841368483e9e94099dab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isBig: 1
   currentState: 0
   spritePool:
   - {fileID: 21300000, guid: f04f8daa8f0494d858d6ac61178eda15, type: 3}
