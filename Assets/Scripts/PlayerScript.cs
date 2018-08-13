@@ -195,6 +195,8 @@ public class PlayerScript : MonoBehaviour {
         }
         if (!rockScript) return false;
         rockScript.getPushed(getAimingDirection());
+		if (grounded) anim.SetTrigger("Punch");
+		else anim.SetTrigger("Punch_air");
         return true;
     }
 
