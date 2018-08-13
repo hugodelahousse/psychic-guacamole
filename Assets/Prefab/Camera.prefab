@@ -142,8 +142,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxShakeDuration: 0.1
-  baseShakeAmount: 0.5
-  bigMultiplier: 2
+  baseShakeAmount: 0.33
+  bigMultiplier: 1.5
 --- !u!114 &114596110314424236
 MonoBehaviour:
   m_ObjectHideFlags: 1
