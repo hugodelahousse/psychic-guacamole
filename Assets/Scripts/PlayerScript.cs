@@ -188,6 +188,7 @@ public class PlayerScript : MonoBehaviour {
         {
             rockScript = grabbedRock;
             grabbedRock = null;
+            setSelectedRock(null);
         }
         else {
             rockScript = selectedRock;
