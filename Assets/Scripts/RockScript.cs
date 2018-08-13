@@ -14,6 +14,9 @@ public class RockScript : MonoBehaviour {
 	private float timePushed = 0;
 	private bool highlighted_ = false;
 
+	public Sprite[] spritePool;
+	public bool randomSprite;
+
 	public float pushSpeed;
 	public float grabbedSpeed;
 	public int projectileLayer;
@@ -41,7 +44,8 @@ public class RockScript : MonoBehaviour {
 		renderer = GetComponent<SpriteRenderer>();
 		c2d = GetComponent<BoxCollider2D>();
 		rb2d = GetComponent<Rigidbody2D>();
-		startColor = renderer.material.color;
+
+		if (randomSprite) renderer.sprite = spritePool[Random.Range(0, spritePool.Length)];
 	}
 	
 	// Update is called once per frame
