@@ -14,6 +14,9 @@ public class GameController : MonoBehaviour {
 	[SerializeField] string[] scenes;
 	[SerializeField] AudioClip respawnClip;
 
+	[SerializeField] float freezeTimeScale = 0.15f;
+	[SerializeField] float freezeTimeDuration = 0.8f;
+
 	bool gameStarted = false;
 
 	Vector2 findSpawnPoint() {
@@ -63,8 +66,8 @@ public class GameController : MonoBehaviour {
 
 	
 	IEnumerator FreezeFrame() {
-        Time.timeScale = 0.15f;
-        yield return new WaitForSecondsRealtime(0.6f);
+        Time.timeScale = freezeTimeScale;
+        yield return new WaitForSecondsRealtime(freezeTimeDuration);
         Time.timeScale = 1;
 	}
 
