@@ -131,6 +131,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isBig: 1
   currentState: 0
+  destroySound: {fileID: 8300000, guid: e2ff6606f225f43f4a24d457e60b2d77, type: 3}
   spritePool:
   - {fileID: 21300000, guid: f04f8daa8f0494d858d6ac61178eda15, type: 3}
   - {fileID: 21300000, guid: aa94f0be4f08d4de1a167c9f867e2a30, type: 3}

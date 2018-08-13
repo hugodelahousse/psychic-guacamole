@@ -15,6 +15,7 @@ public class RockScript : MonoBehaviour {
 	private float timePushed = 0;
 	private bool highlighted_ = false;
 
+	[SerializeField] AudioClip destroySound;
 	public Sprite[] spritePool;
 	public bool randomSprite;
 
@@ -113,5 +114,6 @@ public class RockScript : MonoBehaviour {
 		Camera.main.GetComponent<CameraShake>().shake(isBig);
 		Instantiate(destroyParticles, transform.position, destroyParticles.transform.rotation);
 		StartCoroutine("DestroyNextFrame");
+		AudioSource.PlayClipAtPoint(destroySound, transform.position);
 	}
 }
