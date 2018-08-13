@@ -240,7 +240,10 @@ public class PlayerScript : MonoBehaviour {
     private void OnBecameInvisible() {
         FindObjectOfType<GameController>().onPlayerDie(playerNumber);
         if (gameObject)
+        {
+            Camera.main.GetComponent<Camera2D>().RemoveFocus(this.GetComponent<GameEye2D.Focus.F_Transform>());
             Destroy(gameObject);
+        }
     }
 
 }

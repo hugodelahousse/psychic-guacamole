@@ -10,13 +10,6 @@ public class GameController : MonoBehaviour {
 	public int[] playerLives;
 	public GameObject[] playerPrefab;
 
-	
-
-	IEnumerator Test() {
-		yield return new WaitForSeconds(1f);
-		findSpawnPoint();
-	}
-
 	Vector2 findSpawnPoint() {
 		List<Vector3> available = new List<Vector3>();
 		foreach(GameObject rockObject in GameObject.FindGameObjectsWithTag("Rock"))
@@ -51,6 +44,9 @@ public class GameController : MonoBehaviour {
 		Debug.Log(string.Format("Lives: player1: {0}\tplayer2: {1}", playerLives[0], playerLives[1]));
         --playerLives[playerIndex];
         Vector2 spawn = findSpawnPoint();
-        Instantiate(playerPrefab[playerIndex], spawn + Vector2.up * 2f, Quaternion.identity);
+        GameObject newPlayer = Instantiate(playerPrefab[playerIndex], spawn + Vector2.up * 2f, Quaternion.identity);
+		GameEye2D.Focus.F_Transform F_Transform = newPlayer.GetComponent<GameEye2D.Focus.F_Transform>();
+        Camera.main.GetComponent<Camera2D>().AddFocus(F_Transform);
+
 	}
 }

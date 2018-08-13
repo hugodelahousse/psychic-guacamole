@@ -2571,7 +2571,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_FocusList:
   - {fileID: 1033171329}
-  - {fileID: 0}
+  - {fileID: 1506577254}
   m_ActionRectSpaceAdded: 12
   m_CameraLimits:
     serializedVersion: 2
@@ -2592,7 +2592,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fc239a298246fa45bfa7b6357a68bf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Speed: {x: 0.75, y: 0.75}
+  m_Speed: {x: 3, y: 3}
   m_ViewChangedThreshold: {x: 0, y: 0}
   m_IsMovingThreshold: {x: 0, y: 0}
   m_DrawDebug: 0
@@ -6053,6 +6053,12 @@ Prefab:
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 01ca3a0ae4ac841ec9ef96707b7cf399, type: 2}
   m_IsPrefabAsset: 0
+--- !u!114 &1506577254 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114182920356648632, guid: 34fb14b628c254573a442b21797a0072,
+    type: 2}
+  m_PrefabInternal: {fileID: 1122287954}
+  m_Script: {fileID: 11500000, guid: 807f8d2bf0831224f8b2f509fa2f073f, type: 3}
 --- !u!4 &1507488784 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4849057262664452, guid: 01ca3a0ae4ac841ec9ef96707b7cf399,
