@@ -145,8 +145,12 @@ public class PlayerScript : MonoBehaviour {
         if (newDirection.magnitude > 0.2f)
         {
             aimingDirection = newDirection.normalized;
-            facingLeft = newDirection.x < 0;
+            if (newDirection.x != 0) facingLeft = newDirection.x < 0;
         }
+		else
+		{
+			aimingDirection = new Vector2(facingLeft ? -1 : 1, 0);
+		}
 
         return aimingDirection;
     }
