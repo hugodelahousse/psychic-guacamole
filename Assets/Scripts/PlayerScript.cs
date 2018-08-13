@@ -179,11 +179,12 @@ public class PlayerScript : MonoBehaviour {
             return;
         if (selectedRock)
             selectedRock.highlighted = false;
-        if (rock)
-        {
-            selectedRock = rock;
-            selectedRock.highlighted = true;
-        }
+		if (rock)
+		{
+			selectedRock = rock;
+			selectedRock.highlighted = true;
+		}
+		else selectedRock = null;
     }
 
     bool Punch() {
