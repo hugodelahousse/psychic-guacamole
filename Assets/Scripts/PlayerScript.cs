@@ -38,6 +38,7 @@ public class PlayerScript : MonoBehaviour {
 
     [Header("Player settings")]
     public int playerNumber = 1;
+    [SerializeField] AudioClip deathClip;
 
     [Header("Combat settings")]
     public float stunTime;
@@ -228,6 +229,7 @@ public class PlayerScript : MonoBehaviour {
             if (gameObject)
             {
                 Camera.main.GetComponent<Camera2D>().RemoveFocus(this.GetComponent<GameEye2D.Focus.F_Transform>());
+                AudioSource.PlayClipAtPoint(deathClip, transform.position, 2f);
                 Destroy(gameObject);
             }
             return;

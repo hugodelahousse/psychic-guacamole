@@ -221,6 +221,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerNumber: 1
+  deathClip: {fileID: 8300000, guid: 0af41e8082ce64f6593d672b47d973d7, type: 3}
   stunTime: 0.1
   speed: 13
   maxSpeed: {x: 30, y: 30}
