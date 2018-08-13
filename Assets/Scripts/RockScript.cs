@@ -51,6 +51,11 @@ public class RockScript : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () {
 		if (currentState == state.HELD) {
+			if (!owner)
+			{
+				Destroy(gameObject);
+				return;
+			}
             Vector2 direction = (owner.grabbedRocksPosition.position - transform.position).normalized;
 			float distance = Vector2.Distance(transform.position, owner.grabbedRocksPosition.position);
             rb2d.velocity = direction * grabbedSpeed * distance;

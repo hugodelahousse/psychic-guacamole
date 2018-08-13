@@ -66,9 +66,10 @@ GameObject:
   - component: {fileID: 4476945711435220}
   - component: {fileID: 212782045454106448}
   - component: {fileID: 50806330591117342}
-  - component: {fileID: 70940484308995138}
+  - component: {fileID: 61898952312936614}
   - component: {fileID: 114896557756497232}
   - component: {fileID: 95158973285729666}
+  - component: {fileID: 114725110429718486}
   m_Layer: 0
   m_Name: Player2
   m_TagString: Player
@@ -151,8 +152,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!70 &70940484308995138
-CapsuleCollider2D:
+--- !u!61 &61898952312936614
+BoxCollider2D:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
@@ -163,9 +164,19 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.0123980045, y: -0.23231947}
-  m_Size: {x: 0.64358044, y: 1.5935862}
-  m_Direction: 0
+  m_Offset: {x: 0, y: -0.1}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 2, y: 2}
+    newSize: {x: 2, y: 2}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.8, y: 1.9}
+  m_EdgeRadius: 0
 --- !u!95 &95158973285729666
 Animator:
   serializedVersion: 3
@@ -175,7 +186,7 @@ Animator:
   m_GameObject: {fileID: 1905370455827948}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: fbaee4454765947aeaae7cc301dee8dd, type: 2}
+  m_Controller: {fileID: 22100000, guid: e3356dbe417d5e54d969b0c673951e4a, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -184,6 +195,20 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &114725110429718486
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1905370455827948}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 807f8d2bf0831224f8b2f509fa2f073f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Influence: {x: 1, y: 1}
+  m_DrawDebug: 0
+  m_Offset: {x: 0, y: 0}
 --- !u!114 &114896557756497232
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -195,7 +220,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56927ed1007884ee98115de9f31bca97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerNumber: 1
+  playerNumber: 2
   stunTime: 0.1
   speed: 13
   maxSpeed: {x: 30, y: 30}
@@ -241,7 +266,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 3ffb70e1dcf0948bf8d526cf044c679e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0b85bb5044a8d4ab69c961e9cc406bb1, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
