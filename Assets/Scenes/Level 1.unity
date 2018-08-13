@@ -6757,26 +6757,7 @@ Prefab:
       propertyPath: m_Name
       value: UI (1)
       objectReference: {fileID: 0}
-    - target: {fileID: 1632601787978520, guid: 3699d3223b32c495c9c14f44cd65ebed, type: 2}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114794062358901322, guid: 3699d3223b32c495c9c14f44cd65ebed,
-        type: 2}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1710031854265476, guid: 3699d3223b32c495c9c14f44cd65ebed, type: 2}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114088266539832018, guid: 3699d3223b32c495c9c14f44cd65ebed,
-        type: 2}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 95782128862422602, guid: 3699d3223b32c495c9c14f44cd65ebed, type: 2}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3699d3223b32c495c9c14f44cd65ebed, type: 2}
   m_IsPrefabAsset: 0
 --- !u!4 &1771778030 stripped
