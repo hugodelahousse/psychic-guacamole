@@ -15,6 +15,7 @@ public class PlayerScript : MonoBehaviour {
 	private float lastJumpTime = 0;
 
 	private SpriteRenderer sr;
+    private bool doubleJumped = false;
 	private bool facingLeft_ = false;
     private float grabbedRocksPositionX;
 
@@ -80,8 +81,9 @@ public class PlayerScript : MonoBehaviour {
 
 		moveVertical = 0;
 
-		if (grounded && lastJumpTime + 0.1f < Time.time && Input.GetButtonDown(getPlayerKey("Jump")))
+		if ((grounded || !doubleJumped) && lastJumpTime + 0.1f < Time.time && Input.GetButtonDown(getPlayerKey("Jump")))
 		{
+            doubleJumped = !grounded;
 			moveVertical = jumpForce;
 			rb2d.AddForce(new Vector2(0, moveVertical) * speed);
 			lastJumpTime = Time.time;
