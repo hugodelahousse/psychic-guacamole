@@ -98,14 +98,20 @@ public class RockScript : MonoBehaviour {
 		return new Vector2(transform.position.x + c2d.offset.x, transform.position.y + 0.1f);
 	}
 
+	IEnumerator DestroyNextFrame() {
+		yield return new WaitForEndOfFrame();
+		Destroy(gameObject);
+	}
+
 	void OnCollisionEnter2D(Collision2D other)
 	{
 		if (currentState != state.PUSHED) {
 			return;
 		}
+		Debug.Log("Hit something: " + other.gameObject);
 		// Get destroyed
 		Camera.main.GetComponent<CameraShake>().shake(isBig);
 		Instantiate(destroyParticles, transform.position, destroyParticles.transform.rotation);
-        Destroy(gameObject);
+		StartCoroutine("DestroyNextFrame");
 	}
 }

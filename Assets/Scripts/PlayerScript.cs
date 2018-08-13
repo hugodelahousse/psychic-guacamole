@@ -90,9 +90,6 @@ public class PlayerScript : MonoBehaviour {
             moveHorizontal = Input.GetAxisRaw(getPlayerKey("Horizontal"));
 
 
-        if (!stunned) {
-            rb2d.velocity = new Vector2(moveHorizontal * speed, rb2d.velocity.y);
-        }
 
 		moveVertical = 0;
 
@@ -118,6 +115,13 @@ public class PlayerScript : MonoBehaviour {
 				Punch();
 		}
 
+    }
+
+    void LateUpdate()
+    {
+        if (!stunned) {
+            rb2d.velocity = new Vector2(moveHorizontal * speed, rb2d.velocity.y);
+        }
     }
 
     bool Grab() {
@@ -231,6 +235,7 @@ public class PlayerScript : MonoBehaviour {
         RockScript rockScript = other.gameObject.GetComponent<RockScript>();
         if (!rockScript || rockScript.currentState != RockScript.state.PUSHED)
             return;
+        Debug.Log("Got hit by a rock");
         if (!stunned)
         {
             stunned = true;
