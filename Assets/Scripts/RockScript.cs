@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class RockScript : MonoBehaviour {
 
-	enum state {
+	public enum state {
 		FIXED,
 		HELD,
 		PUSHED,
 	}
-	private state currentState = state.FIXED;
+	public state currentState = state.FIXED;
 
 	private float timePushed = 0;
 	private bool highlighted_ = false;

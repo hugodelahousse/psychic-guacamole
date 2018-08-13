@@ -217,9 +217,9 @@ public class PlayerScript : MonoBehaviour {
     /// <param name="other">The Collision2D data associated with this collision.</param>
     void OnCollisionEnter2D(Collision2D other)
     {
-        Debug.Log(other.gameObject);
+        //Debug.Log(other.gameObject + " " + gameObject.name);
         RockScript rockScript = other.gameObject.GetComponent<RockScript>();
-        if (!rockScript)
+        if (!rockScript || rockScript.currentState != RockScript.state.PUSHED)
             return;
         if (!stunned)
         {
