@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour {
 
@@ -10,6 +11,7 @@ public class GameController : MonoBehaviour {
 
 	public int[] playerLives;
 	public GameObject[] playerPrefab;
+	[SerializeField] string[] scenes;
 
 	bool gameStarted = false;
 
@@ -54,6 +56,11 @@ public class GameController : MonoBehaviour {
 		int otherPlayerIndex = (playerIndex + 1) % 2;
 		Debug.Log(string.Format("Lives: player1: {0}\tplayer2: {1}", playerLives[0], playerLives[1]));
         --playerLives[playerIndex];
+
+		if (playerLives[otherPlayerIndex] == 0) {
+			SceneManager.LoadScene(scenes[Random.Range(0, scenes.Length)]);
+		}
+
 		if (playerLives[playerIndex] == 0) {
 			GameObject.FindGameObjectWithTag("Winner").GetComponent<Image>().enabled = true;
 		} else {
