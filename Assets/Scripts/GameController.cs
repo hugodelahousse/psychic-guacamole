@@ -10,6 +10,8 @@ public class GameController : MonoBehaviour {
 	public int[] playerLives;
 	public GameObject[] playerPrefab;
 
+	bool gameStarted = false;
+
 	Vector2 findSpawnPoint() {
 		List<Vector3> available = new List<Vector3>();
 		foreach(GameObject rockObject in GameObject.FindGameObjectsWithTag("Rock"))
@@ -36,7 +38,14 @@ public class GameController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
+		if (Input.GetKeyDown(KeyCode.Escape))
+		{
+			Application.Quit();
+		}
+		if (!gameStarted && Input.anyKey) {
+			gameStarted = true;
+			GameObject.FindGameObjectWithTag("MainMenu").SetActive(false);
+		}
 	}
 
 	public void onPlayerDie(int playerIndex) {

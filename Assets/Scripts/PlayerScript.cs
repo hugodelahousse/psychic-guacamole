@@ -8,6 +8,7 @@ public class PlayerScript : MonoBehaviour {
         UNDECIDED,
     }
 
+
     private state currentState = state.UNDECIDED;
     private Rigidbody2D rb2d;
     private bool grounded = false;
@@ -76,12 +77,22 @@ public class PlayerScript : MonoBehaviour {
         return string.Format("Player{0}{1}", playerNumber, keyName);
     }
 
-	private void Update()
-	{
-		if (Input.GetKeyDown(KeyCode.Escape))
-		{
-			Application.Quit();
-		}
+	// Update is called once per frame
+	void FixedUpdate() {	
+        grounded = Physics2D.OverlapCircle(groundChecker.position, 0.25f, groundLayer);
+		if (lastGrounded != grounded) anim.SetBool("Jump", lastGrounded);
+        if (lastGrounded == false && grounded == true) anim.SetTrigger("Landing");
+        lastGrounded = grounded;
+
+        if (Input.GetButton(getPlayerKey("Aim")))
+            moveHorizontal = 0;
+        else
+            moveHorizontal = Input.GetAxisRaw(getPlayerKey("Horizontal"));
+
+
+        if (!stunned) {
+            rb2d.velocity = new Vector2(moveHorizontal * speed, rb2d.velocity.y);
+        }
 
 		moveVertical = 0;
 
@@ -96,6 +107,9 @@ public class PlayerScript : MonoBehaviour {
 
 		if (grounded) anim.SetFloat("Velocity", Mathf.Abs(moveHorizontal));
 
+        getAimingDirection();
+        HighlightSelectedRock();
+
 		if (Input.GetButtonDown(getPlayerKey("Punch")))
 		{
 			if (shouldGrab && !grabbedRock)
@@ -103,28 +117,6 @@ public class PlayerScript : MonoBehaviour {
 			else
 				Punch();
 		}
-	}
-
-	// Update is called once per frame
-	void FixedUpdate() {	
-	
-        grounded = Physics2D.OverlapCircle(groundChecker.position, 0.25f, groundLayer);
-		if (lastGrounded != grounded) anim.SetBool("Jump", lastGrounded);
-        if (lastGrounded == false && grounded == true) anim.SetTrigger("Landing");
-        lastGrounded = grounded;
-
-        if (Input.GetButton(getPlayerKey("Aim")))
-            moveHorizontal = 0;
-        else
-            moveHorizontal = Input.GetAxisRaw(getPlayerKey("Horizontal"));
-
-        getAimingDirection();
-        HighlightSelectedRock();
-
-        if (!stunned) {
-            rb2d.velocity = new Vector2(moveHorizontal * speed, rb2d.velocity.y);
-        }
-
 
     }
 
