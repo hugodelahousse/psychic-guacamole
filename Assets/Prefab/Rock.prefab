@@ -129,6 +129,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5f4048ae586841368483e9e94099dab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentState: 0
+  spritePool:
+  - {fileID: 21300000, guid: 056103597522d4f669c4cb92869facff, type: 3}
+  - {fileID: 21300000, guid: 43fe24b23ef254ce99fc88d93c8ba67f, type: 3}
+  - {fileID: 21300000, guid: 358f42a28bc6847509f2d4a2b48b042f, type: 3}
+  - {fileID: 21300000, guid: b6606cac874024c1080d5f5ab42d46b9, type: 3}
+  - {fileID: 21300000, guid: 60ea79ad54fec475b88600c4575b6479, type: 3}
+  - {fileID: 21300000, guid: 60ea79ad54fec475b88600c4575b6479, type: 3}
+  - {fileID: 21300000, guid: 61c00286d6a6547f2a2d21a0343892f7, type: 3}
+  - {fileID: 21300000, guid: 81869eff7a1d844afb49dfd31ced85aa, type: 3}
+  - {fileID: 21300000, guid: 46e8e5edeacf34e13a80ecfe056cd611, type: 3}
+  - {fileID: 21300000, guid: fc6b03f655000432fb0b5a93d6360355, type: 3}
+  - {fileID: 21300000, guid: 4184804b3feb9423f83c23202df6b158, type: 3}
+  - {fileID: 21300000, guid: 70390360ef1b74ee0a935d52627e4325, type: 3}
+  - {fileID: 21300000, guid: b95c39aff6e2543b1af34cb7aa571a0d, type: 3}
+  - {fileID: 21300000, guid: 1b2d54951b06a464681342bb6f677e9e, type: 3}
+  - {fileID: 21300000, guid: 63b7f37200fe848a8bd2588bdfe59844, type: 3}
+  - {fileID: 21300000, guid: 59d010ab6b651408299e5970cc45362d, type: 3}
+  randomSprite: 1
   pushSpeed: 50
   grabbedSpeed: 3
   projectileLayer: 10
