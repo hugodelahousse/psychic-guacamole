@@ -236,5 +236,11 @@ public class PlayerScript : MonoBehaviour {
             StartCoroutine("Stun");
         }
     }
+    
+    private void OnBecameInvisible() {
+        FindObjectOfType<GameController>().onPlayerDie(playerNumber);
+        if (gameObject)
+            Destroy(gameObject);
+    }
 
 }

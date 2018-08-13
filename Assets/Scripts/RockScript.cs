@@ -40,7 +40,7 @@ public class RockScript : MonoBehaviour {
 	}
 	// Use this for initialization
 
-	void Start () {
+	void Awake () {
 		renderer = GetComponent<SpriteRenderer>();
 		c2d = GetComponent<BoxCollider2D>();
 		rb2d = GetComponent<Rigidbody2D>();
@@ -82,6 +82,10 @@ public class RockScript : MonoBehaviour {
 		c2d.isTrigger = true;
 
 		return true;
+	}
+
+	public Vector2 getTop() {
+		return new Vector2(transform.position.x + c2d.offset.x, transform.position.y + 0.1f);
 	}
 
 	void OnCollisionEnter2D(Collision2D other)
