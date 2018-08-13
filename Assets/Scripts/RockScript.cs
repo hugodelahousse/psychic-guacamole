@@ -13,7 +13,7 @@ public class RockScript : MonoBehaviour {
 	public state currentState = state.FIXED;
 
 	private float timePushed = 0;
-	private bool highlighted_ = false;
+	private int highlighted_ = 0;
 
 	[SerializeField] AudioClip destroySound;
 	public Sprite[] spritePool;
@@ -23,7 +23,7 @@ public class RockScript : MonoBehaviour {
 	public float grabbedSpeed;
 	public int projectileLayer;
 	public GameObject destroyParticles;
-	public SpriteRenderer selectorRenderer;
+	public SpriteRenderer[] selectorRenderers;
 
     private Color startColor;
 	private Rigidbody2D rb2d;
@@ -31,12 +31,16 @@ public class RockScript : MonoBehaviour {
 
 	private PlayerScript owner;
 	private BoxCollider2D c2d;
-	public bool highlighted {
+	public int highlighted {
 		get {
 			return highlighted_;
 		}
 		set {
-			selectorRenderer.enabled = value;
+            selectorRenderers[0].enabled = false;
+            selectorRenderers[1].enabled = false;
+			if (value != 0) {
+                selectorRenderers[value - 1].enabled = true;
+			}
 			highlighted_ = value;
 		}
 	}

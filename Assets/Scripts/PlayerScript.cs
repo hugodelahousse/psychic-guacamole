@@ -184,11 +184,11 @@ public class PlayerScript : MonoBehaviour {
         if (rock == selectedRock)
             return;
         if (selectedRock)
-            selectedRock.highlighted = false;
+            selectedRock.highlighted = 0;
 		if (rock)
 		{
 			selectedRock = rock;
-			selectedRock.highlighted = true;
+			selectedRock.highlighted = playerNumber;
 		}
 		else selectedRock = null;
     }

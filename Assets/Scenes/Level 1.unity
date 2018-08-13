@@ -7579,26 +7579,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 6
       objectReference: {fileID: 0}
-    - target: {fileID: 61467836727113746, guid: c274724060df042ccbf9574000c1717d,
-        type: 2}
-      propertyPath: m_Offset.y
-      value: -1.0017976
-      objectReference: {fileID: 0}
-    - target: {fileID: 61467836727113746, guid: c274724060df042ccbf9574000c1717d,
-        type: 2}
-      propertyPath: m_Size.x
-      value: 1.948422
-      objectReference: {fileID: 0}
-    - target: {fileID: 61467836727113746, guid: c274724060df042ccbf9574000c1717d,
-        type: 2}
-      propertyPath: m_Size.y
-      value: 1.9535952
-      objectReference: {fileID: 0}
-    - target: {fileID: 61467836727113746, guid: c274724060df042ccbf9574000c1717d,
-        type: 2}
-      propertyPath: m_Offset.x
-      value: 0.9992111
-      objectReference: {fileID: 0}
     - target: {fileID: 1654383538637778, guid: c274724060df042ccbf9574000c1717d, type: 2}
       propertyPath: m_Name
       value: Rock Lrg (4)
