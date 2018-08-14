@@ -229,7 +229,7 @@ public class PlayerScript : MonoBehaviour {
             if (gameObject)
             {
                 Camera.main.GetComponent<Camera2D>().RemoveFocus(this.GetComponent<GameEye2D.Focus.F_Transform>());
-                AudioSource.PlayClipAtPoint(deathClip, transform.position, 2f);
+                AudioSource.PlayClipAtPoint(deathClip, transform.position, 10f);
                 Destroy(gameObject);
             }
             return;
@@ -237,7 +237,7 @@ public class PlayerScript : MonoBehaviour {
         RockScript rockScript = other.gameObject.GetComponent<RockScript>();
         if (!rockScript || rockScript.currentState != RockScript.state.PUSHED)
             return;
-        Debug.Log("Got hit by a rock");
+        Debug.Log(other.rigidbody.velocity);
         if (!stunned)
         {
             stunned = true;

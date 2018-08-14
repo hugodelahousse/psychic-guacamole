@@ -72,7 +72,7 @@ public class GameController : MonoBehaviour {
 	}
 
 	public void freezeFrame() {
-		StartCoroutine("FreezeFrame");
+		//StartCoroutine("FreezeFrame");
 	}
 
 

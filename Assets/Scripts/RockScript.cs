@@ -122,7 +122,8 @@ public class RockScript : MonoBehaviour {
 		// Get destroyed
 		Camera.main.GetComponent<CameraShake>().shake(isBig);
 		Instantiate(destroyParticles, transform.position, destroyParticles.transform.rotation);
-		StartCoroutine("DestroyNextFrame");
-		AudioSource.PlayClipAtPoint(destroySound, transform.position, 1.5f);
+		//StartCoroutine("DestroyNextFrame");
+		Destroy(gameObject);
+		AudioSource.PlayClipAtPoint(destroySound, transform.position, 10f);
 	}
 }
