@@ -3529,106 +3529,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4849057262664452, guid: 01ca3a0ae4ac841ec9ef96707b7cf399,
     type: 2}
   m_PrefabInternal: {fileID: 307632902}
---- !u!1 &872535533 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1076158698749460, guid: 97ddc6b9b81db455aab03bf2df228daa,
-    type: 2}
-  m_PrefabInternal: {fileID: 1640755538}
---- !u!82 &872535540
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 872535533}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 32e71ac523dc94b54b06179e3a534ef8, type: 3}
-  m_PlayOnAwake: 1
-  m_Volume: 0.706
-  m_Pitch: 1
-  Loop: 1
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!4 &875737855 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4849057262664452, guid: 01ca3a0ae4ac841ec9ef96707b7cf399,
@@ -6371,10 +6271,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1076158698749460, guid: 97ddc6b9b81db455aab03bf2df228daa, type: 2}
-      propertyPath: m_Name
-      value: Main Camera
-      objectReference: {fileID: 0}
     - target: {fileID: 114172161870948126, guid: 97ddc6b9b81db455aab03bf2df228daa,
         type: 2}
       propertyPath: m_FocusList.Array.data[0]
@@ -6385,25 +6281,9 @@ Prefab:
       propertyPath: m_FocusList.Array.data[1]
       value: 
       objectReference: {fileID: 881511568}
-    - target: {fileID: 20490573305231658, guid: 97ddc6b9b81db455aab03bf2df228daa,
-        type: 2}
-      propertyPath: orthographic size
-      value: 14.55
-      objectReference: {fileID: 0}
-    - target: {fileID: 114172161870948126, guid: 97ddc6b9b81db455aab03bf2df228daa,
-        type: 2}
-      propertyPath: m_CameraLimits.height
-      value: 29.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114172161870948126, guid: 97ddc6b9b81db455aab03bf2df228daa,
-        type: 2}
-      propertyPath: m_CameraLimits.y
-      value: -14.6
-      objectReference: {fileID: 0}
-    - target: {fileID: 114223962245911852, guid: 97ddc6b9b81db455aab03bf2df228daa,
-        type: 2}
-      propertyPath: baseShakeAmount
-      value: 0.35
+    - target: {fileID: 1076158698749460, guid: 97ddc6b9b81db455aab03bf2df228daa, type: 2}
+      propertyPath: m_Name
+      value: Main Camera
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 97ddc6b9b81db455aab03bf2df228daa, type: 2}
