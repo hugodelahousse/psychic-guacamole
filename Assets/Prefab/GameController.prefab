@@ -56,10 +56,12 @@ MonoBehaviour:
     m_Bits: 256
   playerLives: 0300000003000000
   playerPrefab:
-  - {fileID: 1905370455827948, guid: 34fb14b628c254573a442b21797a0072, type: 2}
-  - {fileID: 1905370455827948, guid: ea86b75e1def14afc97195c6e24373ab, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
   scenes:
   - Scenes/Level 1
   - Scenes/Level 2
   - Scenes/Level 3
   respawnClip: {fileID: 8300000, guid: 0ebd29e518d5f4464a9bdcc4ccb21a72, type: 3}
+  freezeTimeScale: 0.1
+  freezeTimeDuration: 0.3

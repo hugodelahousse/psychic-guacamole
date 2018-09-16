@@ -29,7 +29,7 @@ public class RockScript : MonoBehaviour {
 	private Rigidbody2D rb2d;
 	private SpriteRenderer renderer;
 
-	private PlayerScript owner;
+	private KinematicPlayer owner;
 	private BoxCollider2D c2d;
 	public int highlighted {
 		get {
@@ -86,7 +86,7 @@ public class RockScript : MonoBehaviour {
 		timePushed = Time.time;
 	}
 
-	public bool getGrabbed(PlayerScript script) {
+	public bool getGrabbed(KinematicPlayer script) {
 		if( currentState != state.FIXED)
             return false;
 		
@@ -95,6 +95,8 @@ public class RockScript : MonoBehaviour {
 		reduceColliderSize();
 		owner = script;
 		c2d.isTrigger = true;
+
+		Physics2D.IgnoreCollision(owner.GetComponent<Collider2D>(), c2d);
 
 		return true;
 	}
@@ -115,10 +117,20 @@ public class RockScript : MonoBehaviour {
 		if (currentState != state.PUSHED) {
 			return;
 		}
-		Debug.Log("Hit something: " + other.gameObject);
+		
+		//Debug.Log("Hit something: " + other.gameObject);
 		if (other.gameObject.CompareTag("Player")) {
 			FindObjectOfType<GameController>().freezeFrame();
+			other.gameObject.GetComponent<KinematicPlayer>().GetHit(other.relativeVelocity);
+
+			//Debug.Log(other.relativeVelocity);
 		}
+
+		if (other.gameObject.CompareTag("Rock")) {
+			Instantiate(destroyParticles, transform.position, destroyParticles.transform.rotation);
+			Destroy(other.gameObject);
+		}
+
 		// Get destroyed
 		Camera.main.GetComponent<CameraShake>().shake(isBig);
 		Instantiate(destroyParticles, transform.position, destroyParticles.transform.rotation);

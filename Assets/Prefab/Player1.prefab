@@ -50,7 +50,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4170250721874796}
   m_Layer: 0
-  m_Name: GroundCheck
+  m_Name: WallCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -67,9 +67,9 @@ GameObject:
   - component: {fileID: 212782045454106448}
   - component: {fileID: 50806330591117342}
   - component: {fileID: 61992207003743628}
-  - component: {fileID: 114896557756497232}
   - component: {fileID: 95158973285729666}
   - component: {fileID: 114182920356648632}
+  - component: {fileID: 114026758459305598}
   m_Layer: 0
   m_Name: Player1
   m_TagString: Player
@@ -84,7 +84,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1842223597102058}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -1, z: 0}
+  m_LocalPosition: {x: -0.45, y: -0.13, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4476945711435220}
@@ -123,7 +123,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1905370455827948}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 13.817542, y: -6.0225363, z: 1.6401362}
+  m_LocalPosition: {x: -13.81, y: -4.75, z: 1.6401362}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4170250721874796}
@@ -139,7 +139,7 @@ Rigidbody2D:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1905370455827948}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -164,7 +164,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: -0.13}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -175,7 +175,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 2}
+  m_Size: {x: 0.9, y: 1.75}
   m_EdgeRadius: 0
 --- !u!95 &95158973285729666
 Animator:
@@ -195,6 +195,30 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &114026758459305598
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1905370455827948}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3ef0d4465bd89e48b75cfe05c956c35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerNumber: 1
+  deathClip: {fileID: 8300000, guid: 0af41e8082ce64f6593d672b47d973d7, type: 3}
+  stunTime: 0.5
+  speed: 12
+  jumpForce: 35
+  gravityModifier: 12
+  shellRadius: 0.01
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 256
+  wallChecker: {fileID: 4170250721874796}
+  rayOrigin: {fileID: 4170680461037868}
+  grabbedRocksPosition: {fileID: 4405870894078722}
 --- !u!114 &114182920356648632
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -209,29 +233,6 @@ MonoBehaviour:
   m_Influence: {x: 1, y: 1}
   m_DrawDebug: 0
   m_Offset: {x: 0, y: 0}
---- !u!114 &114896557756497232
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1905370455827948}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 56927ed1007884ee98115de9f31bca97, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerNumber: 1
-  deathClip: {fileID: 8300000, guid: 0af41e8082ce64f6593d672b47d973d7, type: 3}
-  stunTime: 0.1
-  speed: 13
-  maxSpeed: {x: 30, y: 30}
-  jumpForce: 500
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 256
-  groundChecker: {fileID: 4170250721874796}
-  rayOrigin: {fileID: 4170680461037868}
-  grabbedRocksPosition: {fileID: 4405870894078722}
 --- !u!212 &212782045454106448
 SpriteRenderer:
   m_ObjectHideFlags: 1

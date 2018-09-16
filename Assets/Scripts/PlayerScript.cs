@@ -57,6 +57,9 @@ public class PlayerScript : MonoBehaviour {
     public LayerMask groundLayer;
     public Transform groundChecker;
 
+	public RaycastHit2D[] hits = new RaycastHit2D[16];
+	List<RaycastHit2D> hitBufferList = new List<RaycastHit2D>(16);
+
     public Transform rayOrigin;
     public Transform grabbedRocksPosition;
 
@@ -78,8 +81,25 @@ public class PlayerScript : MonoBehaviour {
         return string.Format("Player{0}{1}", playerNumber, keyName);
     }
 
-	// Update is called once per frame
-	void FixedUpdate() {	
+	// Update for input checking
+	private void Update()
+	{
+		if ((grounded || !doubleJumped) && lastJumpTime + 0.1f < Time.time && Input.GetButtonDown(getPlayerKey("Jump")))
+		{
+			doubleJumped = !grounded;
+			moveVertical = jumpForce;
+			rb2d.velocity = new Vector2(rb2d.velocity.x, 0);
+			rb2d.AddForce(new Vector2(0, moveVertical) * speed);
+			lastJumpTime = Time.time;
+		}
+
+		if (grounded) anim.SetFloat("Velocity", Mathf.Abs(moveHorizontal));
+
+	}
+
+	// Fixed Update for physics calculations
+	void FixedUpdate() {
+
         grounded = Physics2D.OverlapCircle(groundChecker.position, 0.25f, groundLayer);
 		if (lastGrounded != grounded) anim.SetBool("Jump", lastGrounded);
         if (lastGrounded == false && grounded == true) anim.SetTrigger("Landing");
@@ -90,20 +110,7 @@ public class PlayerScript : MonoBehaviour {
         else
             moveHorizontal = Input.GetAxisRaw(getPlayerKey("Horizontal"));
 
-
-
 		moveVertical = 0;
-
-		if ((grounded || !doubleJumped) && lastJumpTime + 0.1f < Time.time && Input.GetButtonDown(getPlayerKey("Jump")))
-		{
-            doubleJumped = !grounded;
-			moveVertical = jumpForce;
-			rb2d.velocity = new Vector2(rb2d.velocity.x, 0);
-			rb2d.AddForce(new Vector2(0, moveVertical) * speed);
-			lastJumpTime = Time.time;
-		}
-
-		if (grounded) anim.SetFloat("Velocity", Mathf.Abs(moveHorizontal));
 
         getAimingDirection();
         HighlightSelectedRock();
@@ -116,7 +123,42 @@ public class PlayerScript : MonoBehaviour {
 				Punch();
 		}
 
-    }
+		// don't fall through the floor
+		Vector2 move = rb2d.velocity * Time.deltaTime;
+		float distance = move.magnitude;
+
+		if (move.magnitude > 0.001f)
+		{
+			//Debug.Log(move);
+			int count = rb2d.Cast(move, hits, move.magnitude + 0.01f);
+			hitBufferList.Clear();
+			for (int i = 0; i < count; i++)
+			{
+				hitBufferList.Add(hits[i]);
+			}
+
+			for (int i = 0; i < hitBufferList.Count; i++)
+			{
+				/*
+				if (Mathf.Abs(hitBufferList[i].normal.y) == 1 || Mathf.Abs(hitBufferList[i].normal.x) == 1)
+				{
+					Vector2 newPos = rb2d.position + move.normalized * hitBufferList[i].distance;
+					rb2d.position = newPos; // move.normalized * hitBufferList[i].distance;
+					Debug.Log("collision");
+					//Debug.DrawRay(hitBufferList[i].point, hitBufferList[i].normal, Color.red, 0.1f);
+					Debug.DrawRay(rb2d.position, move.normalized * hitBufferList[i].distance, Color.cyan, 0.5f);
+				}
+				*/
+				Debug.Log("collision");
+				float modifiedDistance = hitBufferList[i].distance - 0.01f;
+				distance = modifiedDistance < distance ? modifiedDistance : distance;
+				rb2d.position = rb2d.position + move.normalized * distance;
+			}
+
+			//rb2d.position = rb2d.position + move.normalized * distance;
+		}
+
+	}
 
     void LateUpdate()
     {
@@ -127,11 +169,13 @@ public class PlayerScript : MonoBehaviour {
 
     bool Grab() {
         RockScript rockScript = selectedRock;
-        if (rockScript && rockScript.getGrabbed(this))
+        /*
+		if (rockScript && rockScript.getGrabbed(this))
         {
            grabbedRock = rockScript;
            return true;
         }
+		*/
 
         return false;
     }
