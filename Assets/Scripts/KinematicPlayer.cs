@@ -98,9 +98,9 @@ public class KinematicPlayer : MonoBehaviour
 
 	private void Update()
 	{
-		velocity.x = Input.GetAxis(getPlayerKey("Horizontal")) * speed;
+		velocity.x = Input.GetAxisRaw(getPlayerKey("Horizontal")) * speed;
 
-		Debug.DrawRay(transform.position, Vector2.right * 5 * Input.GetAxis(getPlayerKey("Horizontal")), Color.green);
+		Debug.DrawRay(transform.position, Vector2.right * 5 * Input.GetAxisRaw(getPlayerKey("Horizontal")), Color.green);
 
 		velocity.x = stunned ? velocity.x * 0.2f : velocity.x;
 
