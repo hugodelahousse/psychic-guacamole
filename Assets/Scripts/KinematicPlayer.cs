@@ -9,6 +9,7 @@ public class KinematicPlayer : MonoBehaviour
 
 	bool doubleJumped;
 	private float lastJumpTime = 0;
+	private float coyoteTimer = 0;
 
 	bool onWall;
 
@@ -149,6 +150,7 @@ public class KinematicPlayer : MonoBehaviour
 		{
 			anim.SetBool("Jump", lastGrounded);
 			doubleJumped = false;
+			coyoteTimer = 0;
 		}
 		if (lastGrounded == false && grounded == true) anim.SetTrigger("Landing");
 		lastGrounded = grounded;
@@ -175,7 +177,7 @@ public class KinematicPlayer : MonoBehaviour
 			{
 				if (yMove)
 				{
-					grounded = true;
+					if (hitBufferList[i].normal.y > 0.9) grounded = true;
 					velocity.y = 0;
 				}
 
