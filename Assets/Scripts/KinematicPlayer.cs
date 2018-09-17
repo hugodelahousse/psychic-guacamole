@@ -100,6 +100,8 @@ public class KinematicPlayer : MonoBehaviour
 	{
 		velocity.x = Input.GetAxis(getPlayerKey("Horizontal")) * speed;
 
+		Debug.DrawRay(transform.position, Vector2.right * 5 * Input.GetAxis(getPlayerKey("Horizontal")), Color.green);
+
 		velocity.x = stunned ? velocity.x * 0.2f : velocity.x;
 
 		if ((grounded || !doubleJumped) && lastJumpTime + 0.1f < Time.time && Input.GetButtonDown(getPlayerKey("Jump")))
