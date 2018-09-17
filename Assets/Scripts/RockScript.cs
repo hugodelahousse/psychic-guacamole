@@ -122,14 +122,14 @@ public class RockScript : MonoBehaviour {
 		if (other.gameObject.CompareTag("Player")) {
 			FindObjectOfType<GameController>().freezeFrame();
 			other.gameObject.GetComponent<KinematicPlayer>().GetHit(other.relativeVelocity);
-
-			//Debug.Log(other.relativeVelocity);
 		}
 
 		if (other.gameObject.CompareTag("Rock")) {
 			Instantiate(destroyParticles, transform.position, destroyParticles.transform.rotation);
 			Destroy(other.gameObject);
 		}
+
+		Debug.Log(other.relativeVelocity);
 
 		// Get destroyed
 		Camera.main.GetComponent<CameraShake>().shake(isBig);

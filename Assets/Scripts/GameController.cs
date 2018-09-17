@@ -65,14 +65,16 @@ public class GameController : MonoBehaviour {
 	}
 
 	
-	IEnumerator FreezeFrame() {
+	public IEnumerator FreezeFrame() {
         Time.timeScale = freezeTimeScale;
+		Time.fixedDeltaTime = freezeTimeScale * 0.02f;
         yield return new WaitForSecondsRealtime(freezeTimeDuration);
+		Time.fixedDeltaTime = 0.02f;
         Time.timeScale = 1;
 	}
 
 	public void freezeFrame() {
-		//StartCoroutine("FreezeFrame");
+		StartCoroutine("FreezeFrame");
 	}
 
 
