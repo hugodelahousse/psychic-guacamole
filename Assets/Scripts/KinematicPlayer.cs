@@ -122,6 +122,9 @@ public class KinematicPlayer : MonoBehaviour
 
 	void FixedUpdate () 
 	{
+		RaycastHit2D[] intersects  = new RaycastHit2D[16];
+		if (rb2d.Cast(Vector2.zero, intersects) > 0) transform.position += Vector3.up * 3; // <- temp fix to stop overlapping! FIX THIS!
+
 		onWall = Physics2D.OverlapCircle(wallChecker.position, 0.25f, groundLayer);
 		if (onWall)
 		{
