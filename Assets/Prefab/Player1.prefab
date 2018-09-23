@@ -209,13 +209,13 @@ MonoBehaviour:
   playerNumber: 1
   deathClip: {fileID: 8300000, guid: 0af41e8082ce64f6593d672b47d973d7, type: 3}
   stunTime: 0.5
-  selectedRockTimer: 0.5
+  selectedRockTimer: 0.25
   speed: 12
   jumpForce: 35
   gravityModifier: 12
   shellRadius: 0.01
-  jumpTimer: 0.15
-  coyoteTimer: 0.1
+  jumpTimer: 0.3
+  coyoteTimer: 0.3
   groundLayer:
     serializedVersion: 2
     m_Bits: 256
