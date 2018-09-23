@@ -9,6 +9,7 @@ public class RockScript : MonoBehaviour {
 		HELD,
 		PUSHED,
 	}
+
 	[SerializeField] bool isBig;
 	public state currentState = state.FIXED;
 
@@ -24,13 +25,27 @@ public class RockScript : MonoBehaviour {
 	public int projectileLayer;
 	public GameObject destroyParticles;
 	public SpriteRenderer[] selectorRenderers;
+	public float smallForceRadius;
+	public float constantForceRadius;
+	public float smallForce;
+	public float constantForce;
+	public float destroyTime;
 
     private Color startColor;
 	private Rigidbody2D rb2d;
 	private SpriteRenderer renderer;
 
 	private KinematicPlayer owner;
-	private BoxCollider2D c2d;
+
+	bool onlyOnce = false;
+
+	Collider2D[] aimAssistTarget = new Collider2D[16];
+	public ContactFilter2D contactFilter;
+
+	// public so we can do physics2d.ignore collision in the player punch function
+	[HideInInspector]
+	public BoxCollider2D c2d;
+
 	public int highlighted {
 		get {
 			return highlighted_;
@@ -70,6 +85,42 @@ public class RockScript : MonoBehaviour {
 			float distance = Vector2.Distance(centerPosition, owner.grabbedRocksPosition.position);
             rb2d.velocity = direction * grabbedSpeed * distance;
 		}
+
+		if (currentState == state.PUSHED)
+		{
+			Vector3 centerPosition = c2d.offset;
+			centerPosition += transform.position;
+
+			int smallForceCount = Physics2D.OverlapCircle(centerPosition, smallForceRadius, contactFilter, aimAssistTarget);
+
+			for (int i = 0; i < smallForceCount; i++)
+			{
+				if (aimAssistTarget[i].gameObject != owner.gameObject && aimAssistTarget[i].CompareTag("Player") && !onlyOnce)
+				{
+					//Debug.DrawRay(centerPosition, (aimAssistTarget[i].transform.position - transform.position).normalized * smallForce, Color.white, 5f);
+					rb2d.AddForce((aimAssistTarget[i].transform.position - centerPosition).normalized * smallForce, ForceMode2D.Impulse);
+					rb2d.velocity = rb2d.velocity.normalized * pushSpeed;
+					onlyOnce = true;
+				}
+			}
+
+			int conForceCount = Physics2D.OverlapCircle(centerPosition, constantForceRadius, contactFilter, aimAssistTarget);
+
+			for (int i = 0; i < conForceCount; i++)
+			{
+				if (aimAssistTarget[i].gameObject != owner.gameObject && aimAssistTarget[i].CompareTag("Player"))
+				{
+					//Debug.DrawRay(centerPosition, (aimAssistTarget[i].transform.position - transform.position).normalized * constantForce, Color.red, 5f);
+					rb2d.AddForce((aimAssistTarget[i].transform.position - centerPosition).normalized * constantForce, ForceMode2D.Impulse);
+					rb2d.velocity = rb2d.velocity.normalized * pushSpeed;
+				}
+			}
+		}
+
+		if (timePushed != 0 && timePushed + destroyTime < Time.time)
+		{
+			Destroy(gameObject);
+		}
 	}
 
 	private void reduceColliderSize() {
@@ -96,8 +147,6 @@ public class RockScript : MonoBehaviour {
 		owner = script;
 		c2d.isTrigger = true;
 
-		Physics2D.IgnoreCollision(owner.GetComponent<Collider2D>(), c2d);
-
 		return true;
 	}
 
@@ -109,8 +158,6 @@ public class RockScript : MonoBehaviour {
 		yield return new WaitForEndOfFrame();
 		Destroy(gameObject);
 	}
-
-
 
 	void OnCollisionEnter2D(Collision2D other)
 	{
@@ -129,13 +176,19 @@ public class RockScript : MonoBehaviour {
 			Destroy(other.gameObject);
 		}
 
-		Debug.Log(other.relativeVelocity);
-
 		// Get destroyed
 		Camera.main.GetComponent<CameraShake>().shake(isBig);
 		Instantiate(destroyParticles, transform.position, destroyParticles.transform.rotation);
 		//StartCoroutine("DestroyNextFrame");
 		Destroy(gameObject);
 		AudioSource.PlayClipAtPoint(destroySound, transform.position, 10f);
+	}
+
+	private void OnDrawGizmosSelected()
+	{
+		UnityEditor.Handles.color = Color.green;
+		UnityEditor.Handles.DrawWireDisc(new Vector2(transform.position.x, transform.position.y) + GetComponent<Collider2D>().offset, Vector3.back, smallForceRadius);
+		UnityEditor.Handles.color = Color.yellow;
+		UnityEditor.Handles.DrawWireDisc(new Vector2(transform.position.x, transform.position.y) + GetComponent<Collider2D>().offset, Vector3.back, constantForceRadius);
 	}
 }

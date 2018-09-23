@@ -179,6 +179,26 @@ MonoBehaviour:
   selectorRenderers:
   - {fileID: 212726555639999506}
   - {fileID: 212084217293316832}
+  smallForceRadius: 5
+  constantForceRadius: 15
+  smallForce: 100
+  constantForce: 20
+  destroyTime: 3
+  contactFilter:
+    useTriggers: 0
+    useLayerMask: 1
+    useDepth: 0
+    useOutsideDepth: 0
+    useNormalAngle: 0
+    useOutsideNormalAngle: 0
+    layerMask:
+      serializedVersion: 2
+      m_Bits: 512
+    minDepth: 0
+    maxDepth: 0
+    minNormalAngle: 0
+    maxNormalAngle: 0
+  c2d: {fileID: 0}
 --- !u!212 &212084217293316832
 SpriteRenderer:
   m_ObjectHideFlags: 1

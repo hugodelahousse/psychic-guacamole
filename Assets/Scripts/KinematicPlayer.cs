@@ -9,7 +9,8 @@ public class KinematicPlayer : MonoBehaviour
 
 	bool doubleJumped;
 	private float lastJumpTime = 0;
-	private float coyoteTimer = 0;
+	private float coyoteTime = 0;
+	private float selectedRockTime = 0;
 
 	bool onWall;
 
@@ -41,12 +42,15 @@ public class KinematicPlayer : MonoBehaviour
 
 	[Header("Combat settings")]
 	public float stunTime;
+	public float selectedRockTimer = 0.5f;
 
 	[Header("Movement settings")]
 	public float speed = 5f;
 	public float jumpForce = 5f;
 	public float gravityModifier = 1f;
 	public float shellRadius = 0.01f;
+	public float jumpTimer = 0.15f;
+	public float coyoteTimer = 0.1f;
 
 	[Header("References")]
 	public LayerMask groundLayer;
@@ -54,6 +58,8 @@ public class KinematicPlayer : MonoBehaviour
 
 	public Transform rayOrigin;
 	public Transform grabbedRocksPosition;
+
+	bool onlyOnce;
 
 	private bool facingLeft
 	{
@@ -105,12 +111,20 @@ public class KinematicPlayer : MonoBehaviour
 
 		velocity.x = stunned ? velocity.x * 0.2f : velocity.x;
 
-		if ((grounded || !doubleJumped) && lastJumpTime + 0.1f < Time.time && Input.GetButtonDown(getPlayerKey("Jump")))
+		if ((((grounded || !doubleJumped) && lastJumpTime + jumpTimer < Time.time) 
+			|| coyoteTime + coyoteTimer > Time.time) 
+			&& Input.GetButtonDown(getPlayerKey("Jump")))
 		{
-			doubleJumped = !grounded;
+			if (coyoteTime + 0.1f > Time.time) doubleJumped = false;
+			else doubleJumped = !grounded;
+
 			velocity.y = jumpForce;
 			lastJumpTime = Time.time;
 		}
+
+		//if (coyoteTime + 0.1f > Time.time && Input.GetButtonDown(getPlayerKey("Jump"))) Debug.Log("jumped during coyote time");
+
+		//if (coyoteTime + 0.1f > Time.time) Debug.Log("coy");
 
 		if (Input.GetButtonDown(getPlayerKey("Punch")))
 		{
@@ -125,8 +139,10 @@ public class KinematicPlayer : MonoBehaviour
 
 	void FixedUpdate () 
 	{
-		RaycastHit2D[] intersects  = new RaycastHit2D[16];
+		//RaycastHit2D[] intersects  = new RaycastHit2D[16];
 		//if (rb2d.Cast(Vector2.zero, intersects) > 0) transform.position += Vector3.up * 3;
+
+		// ! NEED TO ACCOUNT FOR THE FEW CASES WHERE YOU SPAWN IN SOMETHING !
 
 		onWall = Physics2D.OverlapCircle(wallChecker.position, 0.25f, groundLayer);
 		if (onWall)
@@ -150,9 +166,10 @@ public class KinematicPlayer : MonoBehaviour
 		{
 			anim.SetBool("Jump", lastGrounded);
 			doubleJumped = false;
-			coyoteTimer = 0;
+
+			if (lastGrounded && !grounded) coyoteTime = Time.time;
+			if (!lastGrounded && grounded) anim.SetTrigger("Landing");
 		}
-		if (lastGrounded == false && grounded == true) anim.SetTrigger("Landing");
 		lastGrounded = grounded;
 
 		getAimingDirection();
@@ -225,6 +242,7 @@ public class KinematicPlayer : MonoBehaviour
 			setSelectedRock(null);
 			return;
 		}
+
 		RockScript script = null;
 		RaycastHit2D frontRayHit = Physics2D.Raycast(rayOrigin.position, aimingDirection, 2f, groundLayer);
 		if (frontRayHit)
@@ -237,6 +255,21 @@ public class KinematicPlayer : MonoBehaviour
 				return;
 			}
 		}
+		else
+		{
+			frontRayHit = Physics2D.Raycast(rayOrigin.position - Vector3.up, aimingDirection, 2f, groundLayer);
+			if (frontRayHit)
+			{
+				script = frontRayHit.collider.GetComponent<RockScript>();
+				if (script)
+				{
+					setSelectedRock(script);
+					shouldGrab = false;
+					return;
+				}
+			}
+		}
+
 		RaycastHit2D backRayHit = Physics2D.Raycast(rayOrigin.position, -aimingDirection, 10f, groundLayer);
 		if (backRayHit)
 		{
@@ -248,19 +281,51 @@ public class KinematicPlayer : MonoBehaviour
 				return;
 			}
 		}
+		else
+		{	
+			backRayHit = Physics2D.Raycast(rayOrigin.position - Vector3.up, -aimingDirection, 10f, groundLayer);
+			if (backRayHit)
+			{
+				script = backRayHit.collider.GetComponent<RockScript>();
+				if (script)
+				{
+					setSelectedRock(script);
+					shouldGrab = true;
+					return;
+				}
+			}
+		}
+
+		if (selectedRock)
+		{
+			if (onlyOnce)
+			{
+				selectedRockTime = Time.time;
+				onlyOnce = false;
+			}
+
+			if (selectedRockTime + selectedRockTimer > Time.time)
+			{
+				setSelectedRock(selectedRock);
+			}
+			else setSelectedRock(null);
+
+			return;
+		}
+
 		setSelectedRock(null);
 	}
 
 	void setSelectedRock(RockScript rock)
 	{
-		if (rock == selectedRock)
-			return;
+		if (rock == selectedRock) return;
 		if (selectedRock)
 			selectedRock.highlighted = 0;
 		if (rock)
 		{
 			selectedRock = rock;
 			selectedRock.highlighted = playerNumber;
+			onlyOnce = true;
 		}
 		else selectedRock = null;
 	}
@@ -279,6 +344,9 @@ public class KinematicPlayer : MonoBehaviour
 			setSelectedRock(null);
 		}
 		if (!rockScript) return false;
+
+		Physics2D.IgnoreCollision(GetComponent<Collider2D>(), rockScript.c2d);
+
 		rockScript.getPushed(getAimingDirection());
 		if (grounded) anim.SetTrigger("Punch");
 		else anim.SetTrigger("Punch_air");
@@ -287,7 +355,6 @@ public class KinematicPlayer : MonoBehaviour
 
 	public void GetHit(Vector2 direction)
 	{
-		//Debug.Log("oof");
 		StartCoroutine(Stun(-direction));
 	}
 

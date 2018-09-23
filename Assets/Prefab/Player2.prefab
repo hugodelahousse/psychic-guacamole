@@ -19,7 +19,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4170680461037868}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: RayOrigin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -34,7 +34,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4405870894078722}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: GrabbedRocks
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -49,7 +49,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4170250721874796}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: WallCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -70,7 +70,7 @@ GameObject:
   - component: {fileID: 95158973285729666}
   - component: {fileID: 114725110429718486}
   - component: {fileID: 114661991767840912}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Player2
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -209,10 +209,13 @@ MonoBehaviour:
   playerNumber: 2
   deathClip: {fileID: 8300000, guid: 0af41e8082ce64f6593d672b47d973d7, type: 3}
   stunTime: 0.5
+  selectedRockTimer: 0.5
   speed: 12
   jumpForce: 35
   gravityModifier: 12
   shellRadius: 0.01
+  jumpTimer: 0.15
+  coyoteTimer: 0.1
   groundLayer:
     serializedVersion: 2
     m_Bits: 256
