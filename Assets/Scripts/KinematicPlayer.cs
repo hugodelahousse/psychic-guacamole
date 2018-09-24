@@ -107,7 +107,7 @@ public class KinematicPlayer : MonoBehaviour
 	{
 		velocity.x = Input.GetAxisRaw(getPlayerKey("Horizontal")) * speed;
 
-		Debug.DrawRay(transform.position, Vector2.right * 5 * Input.GetAxisRaw(getPlayerKey("Horizontal")), Color.green);
+		//Debug.DrawRay(transform.position, new Vector2(Input.GetAxisRaw(getPlayerKey("Vertical")), Input.GetAxisRaw(getPlayerKey("Horizontal"))), Color.green);
 
 		velocity.x = stunned ? velocity.x * 0.2f : velocity.x;
 
@@ -356,6 +356,7 @@ public class KinematicPlayer : MonoBehaviour
 	public void GetHit(Vector2 direction)
 	{
 		StartCoroutine(Stun(-direction));
+		Debug.Log("oof");
 	}
 
 	IEnumerator Stun(Vector2 direction)
@@ -366,7 +367,10 @@ public class KinematicPlayer : MonoBehaviour
 		{
 			t += Time.deltaTime / stunTime;
 			float x = 1 - (t / stunTime);
+			// ! make it so your input influences the knockback !
+			velocity = Vector2.zero;
 			velocity += direction * x;
+
 			yield return null;
 		}
 
@@ -386,6 +390,7 @@ public class KinematicPlayer : MonoBehaviour
 			FindObjectOfType<GameController>().onPlayerDie(playerNumber);
 			if (gameObject)
 			{
+				if (selectedRock) selectedRock.highlighted = 0;
 				Camera.main.GetComponent<Camera2D>().RemoveFocus(this.GetComponent<GameEye2D.Focus.F_Transform>());
 				AudioSource.PlayClipAtPoint(deathClip, transform.position, 10f);
 				Destroy(gameObject);

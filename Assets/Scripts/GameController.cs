@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour {
 
-
+	
 	public LayerMask groundLayerMask;
 
 	public int[] playerLives;
@@ -81,10 +81,12 @@ public class GameController : MonoBehaviour {
 	public void onPlayerDie(int playerIndex) {
 		playerIndex = playerIndex - 1;
 		int otherPlayerIndex = (playerIndex + 1) % 2;
-		Debug.Log(string.Format("Lives: player1: {0}\tplayer2: {1}", playerLives[0], playerLives[1]));
+		//Debug.Log(string.Format("Lives: player1: {0}\tplayer2: {1}", playerLives[0], playerLives[1]));
         --playerLives[playerIndex];
 
 		if (playerLives[otherPlayerIndex] == 0) {
+			Time.fixedDeltaTime = 0.02f;
+			Time.timeScale = 1;
 			SceneManager.LoadScene(scenes[Random.Range(0, scenes.Length)]);
 		}
 

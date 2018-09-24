@@ -14,7 +14,7 @@ public class RockScript : MonoBehaviour {
 	public state currentState = state.FIXED;
 
 	private float timePushed = 0;
-	private int highlighted_ = 0;
+	public int highlighted_ = 0;
 
 	[SerializeField] AudioClip destroySound;
 	public Sprite[] spritePool;
@@ -23,6 +23,7 @@ public class RockScript : MonoBehaviour {
 	public float pushSpeed;
 	public float grabbedSpeed;
 	public int projectileLayer;
+	public int noColLayer;
 	public GameObject destroyParticles;
 	public SpriteRenderer[] selectorRenderers;
 	public float smallForceRadius;
@@ -59,7 +60,6 @@ public class RockScript : MonoBehaviour {
 			highlighted_ = value;
 		}
 	}
-	// Use this for initialization
 
 	void Awake () {
 		renderer = GetComponent<SpriteRenderer>();
@@ -91,16 +91,28 @@ public class RockScript : MonoBehaviour {
 			Vector3 centerPosition = c2d.offset;
 			centerPosition += transform.position;
 
+			// ! needs to work even if owner has died !
 			int smallForceCount = Physics2D.OverlapCircle(centerPosition, smallForceRadius, contactFilter, aimAssistTarget);
 
 			for (int i = 0; i < smallForceCount; i++)
 			{
-				if (aimAssistTarget[i].gameObject != owner.gameObject && aimAssistTarget[i].CompareTag("Player") && !onlyOnce)
+				if (owner)
 				{
-					//Debug.DrawRay(centerPosition, (aimAssistTarget[i].transform.position - transform.position).normalized * smallForce, Color.white, 5f);
-					rb2d.AddForce((aimAssistTarget[i].transform.position - centerPosition).normalized * smallForce, ForceMode2D.Impulse);
-					rb2d.velocity = rb2d.velocity.normalized * pushSpeed;
-					onlyOnce = true;
+					if (aimAssistTarget[i].CompareTag("Player") && !onlyOnce && aimAssistTarget[i].gameObject != owner.gameObject)
+					{
+						rb2d.AddForce((aimAssistTarget[i].transform.position - centerPosition).normalized * smallForce, ForceMode2D.Impulse);
+						rb2d.velocity = rb2d.velocity.normalized * pushSpeed;
+						onlyOnce = true;
+					}
+				}
+				else 
+				{
+					if (aimAssistTarget[i].CompareTag("Player") && !onlyOnce)
+					{
+						rb2d.AddForce((aimAssistTarget[i].transform.position - centerPosition).normalized * smallForce, ForceMode2D.Impulse);
+						rb2d.velocity = rb2d.velocity.normalized * pushSpeed;
+						onlyOnce = true;
+					}
 				}
 			}
 
@@ -108,11 +120,21 @@ public class RockScript : MonoBehaviour {
 
 			for (int i = 0; i < conForceCount; i++)
 			{
-				if (aimAssistTarget[i].gameObject != owner.gameObject && aimAssistTarget[i].CompareTag("Player"))
+				if (owner)
 				{
-					//Debug.DrawRay(centerPosition, (aimAssistTarget[i].transform.position - transform.position).normalized * constantForce, Color.red, 5f);
-					rb2d.AddForce((aimAssistTarget[i].transform.position - centerPosition).normalized * constantForce, ForceMode2D.Impulse);
-					rb2d.velocity = rb2d.velocity.normalized * pushSpeed;
+					if (aimAssistTarget[i].gameObject != owner.gameObject && aimAssistTarget[i].CompareTag("Player"))
+					{
+						rb2d.AddForce((aimAssistTarget[i].transform.position - centerPosition).normalized * constantForce, ForceMode2D.Impulse);
+						rb2d.velocity = rb2d.velocity.normalized * pushSpeed;
+					}
+				}
+				else 
+				{
+					if (aimAssistTarget[i].CompareTag("Player"))
+					{
+						rb2d.AddForce((aimAssistTarget[i].transform.position - centerPosition).normalized * constantForce, ForceMode2D.Impulse);
+						rb2d.velocity = rb2d.velocity.normalized * pushSpeed;
+					}
 				}
 			}
 		}
@@ -140,7 +162,7 @@ public class RockScript : MonoBehaviour {
 	public bool getGrabbed(KinematicPlayer script) {
 		if( currentState != state.FIXED)
             return false;
-		
+		gameObject.layer = noColLayer;
 		currentState = state.HELD;
 		rb2d.bodyType = RigidbodyType2D.Dynamic;
 		reduceColliderSize();

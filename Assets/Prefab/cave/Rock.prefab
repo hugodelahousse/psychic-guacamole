@@ -161,6 +161,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isBig: 0
   currentState: 0
+  highlighted_: 0
   destroySound: {fileID: 8300000, guid: e2ff6606f225f43f4a24d457e60b2d77, type: 3}
   spritePool:
   - {fileID: 21300000, guid: 056103597522d4f669c4cb92869facff, type: 3}
@@ -183,6 +184,7 @@ MonoBehaviour:
   pushSpeed: 50
   grabbedSpeed: 5
   projectileLayer: 10
+  noColLayer: 11
   destroyParticles: {fileID: 1031644160562676, guid: d1702681adb41a04790162652f1257bc,
     type: 2}
   selectorRenderers:
