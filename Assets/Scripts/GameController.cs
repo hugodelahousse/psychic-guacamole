@@ -28,14 +28,22 @@ public class GameController : MonoBehaviour {
                 continue;
 			Vector2 rockTop = rock.getTop();
 			RaycastHit2D hit = Physics2D.Raycast(rockTop, Vector2.up, 2.5f, groundLayerMask);
+	
 			if (!hit.collider)
 			{
 				available.Add(rockTop);
 			}
+			else
+			{
+				if (hit.collider.gameObject.layer == 12) Debug.DrawRay(hit.point, Vector2.up, Color.red, 5f);
+			}
 		}
 		if (available.Count == 0)
             return Vector3.zero;
-		return available[Random.Range(0, available.Count)];
+
+		Vector2 pos = available[Random.Range(0, available.Count)];
+		Debug.DrawRay(pos, Vector2.up, Color.cyan, 5f);
+		return pos; // available[Random.Range(0, available.Count)];
 	}
 
 	// Use this for initialization
@@ -52,14 +60,22 @@ public class GameController : MonoBehaviour {
 		if (!gameStarted && Input.anyKey) {
 			gameStarted = true;
 			GameObject.FindGameObjectWithTag("MainMenu").SetActive(false);
+
+			GameObject lavaObject = GameObject.FindGameObjectWithTag("Lava");
+			if (lavaObject)
+			{
+				Lava lava = lavaObject.GetComponent<Lava>();
+				lava.StartCoroutine(lava.Rise());
+			}
 		}
 	}
 
 	IEnumerator RespawnPlayer(int playerIndex) {
-        Vector2 spawn = findSpawnPoint();
-		AudioSource.PlayClipAtPoint(respawnClip, spawn, 1f);
 		yield return new WaitForSeconds(0.5f);
-        GameObject newPlayer = Instantiate(playerPrefab[playerIndex], spawn + Vector2.up * 2f, Quaternion.identity);
+
+		Vector2 spawn = findSpawnPoint();
+		AudioSource.PlayClipAtPoint(respawnClip, spawn, 1f);
+		GameObject newPlayer = Instantiate(playerPrefab[playerIndex], spawn + Vector2.up * 2f, Quaternion.identity);
         GameEye2D.Focus.F_Transform F_Transform = newPlayer.GetComponent<GameEye2D.Focus.F_Transform>();
         Camera.main.GetComponent<Camera2D>().AddFocus(F_Transform);
 	}

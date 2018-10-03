@@ -59,6 +59,8 @@ public class KinematicPlayer : MonoBehaviour
 	public Transform rayOrigin;
 	public Transform grabbedRocksPosition;
 
+	GameController gc;
+
 	bool onlyOnce;
 
 	private bool facingLeft
@@ -90,6 +92,8 @@ public class KinematicPlayer : MonoBehaviour
 		anim = GetComponent<Animator>();
 		sr = GetComponent<SpriteRenderer>();
 
+		gc = FindObjectOfType<GameController>();
+
 		grabbedRocksPositionX = grabbedRocksPosition.localPosition.x;
 		wallCheckX = wallChecker.localPosition.x;
 
@@ -109,7 +113,7 @@ public class KinematicPlayer : MonoBehaviour
 
 		//Debug.DrawRay(transform.position, new Vector2(Input.GetAxisRaw(getPlayerKey("Vertical")), Input.GetAxisRaw(getPlayerKey("Horizontal"))), Color.green);
 
-		velocity.x = stunned ? velocity.x * 0.2f : velocity.x;
+		if (stunned) velocity.x = 0;
 
 		if ((((grounded || !doubleJumped) && lastJumpTime + jumpTimer < Time.time) 
 			|| coyoteTime + coyoteTimer > Time.time) 
@@ -341,6 +345,18 @@ public class KinematicPlayer : MonoBehaviour
 		else
 		{
 			rockScript = selectedRock;
+
+			if (rockScript)
+			{
+				Vector2 rockPos = new Vector2(rockScript.transform.position.x, rockScript.transform.position.y);
+				//Debug.DrawRay(rockPos + rockScript.c2d.offset, getAimingDirection(), Color.red, 5f);
+
+				if (Physics2D.Raycast(rockPos + rockScript.c2d.offset, getAimingDirection(), rockScript.isBig ? 2f : 1f, groundLayer))
+				{
+					rockScript.destroyOther = false;
+				}
+			}
+
 			setSelectedRock(null);
 		}
 		if (!rockScript) return false;
@@ -356,7 +372,6 @@ public class KinematicPlayer : MonoBehaviour
 	public void GetHit(Vector2 direction)
 	{
 		StartCoroutine(Stun(-direction));
-		Debug.Log("oof");
 	}
 
 	IEnumerator Stun(Vector2 direction)
@@ -367,7 +382,6 @@ public class KinematicPlayer : MonoBehaviour
 		{
 			t += Time.deltaTime / stunTime;
 			float x = 1 - (t / stunTime);
-			// ! make it so your input influences the knockback !
 			velocity = Vector2.zero;
 			velocity += direction * x;
 
@@ -375,6 +389,15 @@ public class KinematicPlayer : MonoBehaviour
 		}
 
 		stunned = false;
+	}
+
+	public void PlayerDie()
+	{
+		gc.onPlayerDie(playerNumber);
+		if (selectedRock) selectedRock.highlighted = 0;
+		Camera.main.GetComponent<Camera2D>().RemoveFocus(this.GetComponent<GameEye2D.Focus.F_Transform>());
+		AudioSource.PlayClipAtPoint(deathClip, transform.position, 10f);
+		Destroy(gameObject);
 	}
 
 	/// <summary>
@@ -387,13 +410,9 @@ public class KinematicPlayer : MonoBehaviour
 	{
 		if (collision.gameObject.CompareTag("DeathCollider"))
 		{
-			FindObjectOfType<GameController>().onPlayerDie(playerNumber);
 			if (gameObject)
 			{
-				if (selectedRock) selectedRock.highlighted = 0;
-				Camera.main.GetComponent<Camera2D>().RemoveFocus(this.GetComponent<GameEye2D.Focus.F_Transform>());
-				AudioSource.PlayClipAtPoint(deathClip, transform.position, 10f);
-				Destroy(gameObject);
+				PlayerDie();
 			}
 		}
 	}

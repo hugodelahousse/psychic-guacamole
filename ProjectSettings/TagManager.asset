@@ -8,6 +8,7 @@ TagManager:
   - MainMenu
   - Winner
   - DeathCollider
+  - Lava
   layers:
   - Default
   - TransparentFX
@@ -21,7 +22,7 @@ TagManager:
   - PlayerLayer
   - ProjectileLayer
   - NoColLayer
-  - 
+  - Lava
   - 
   - 
   - 

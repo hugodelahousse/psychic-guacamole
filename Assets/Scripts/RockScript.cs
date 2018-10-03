@@ -10,7 +10,7 @@ public class RockScript : MonoBehaviour {
 		PUSHED,
 	}
 
-	[SerializeField] bool isBig;
+	public bool isBig;
 	public state currentState = state.FIXED;
 
 	private float timePushed = 0;
@@ -39,11 +39,14 @@ public class RockScript : MonoBehaviour {
 	private KinematicPlayer owner;
 
 	bool onlyOnce = false;
+	
+	[HideInInspector]
+	public bool destroyOther;
 
 	Collider2D[] aimAssistTarget = new Collider2D[16];
 	public ContactFilter2D contactFilter;
 
-	// public so we can do physics2d.ignore collision in the player punch function
+	// public so we can do physics2d.ignore collision in the player punch function and get the offset of the block
 	[HideInInspector]
 	public BoxCollider2D c2d;
 
@@ -62,6 +65,7 @@ public class RockScript : MonoBehaviour {
 	}
 
 	void Awake () {
+		destroyOther = true;
 		renderer = GetComponent<SpriteRenderer>();
 		c2d = GetComponent<BoxCollider2D>();
 		rb2d = GetComponent<Rigidbody2D>();
@@ -146,12 +150,13 @@ public class RockScript : MonoBehaviour {
 	}
 
 	private void reduceColliderSize() {
-		c2d.offset += Vector2.one * c2d.size / 10;
-		c2d.size = c2d.size * 0.8f;
+		//c2d.offset += Vector2.one * c2d.size / 10;
+		c2d.size = c2d.size * 0.9f;
 	}
 
 	public void getPushed(Vector2 direction) {
 		this.currentState = state.PUSHED;
+		reduceColliderSize();
 		gameObject.layer = projectileLayer;
 		rb2d.bodyType = RigidbodyType2D.Dynamic;
 		rb2d.velocity = pushSpeed * direction;
@@ -165,7 +170,7 @@ public class RockScript : MonoBehaviour {
 		gameObject.layer = noColLayer;
 		currentState = state.HELD;
 		rb2d.bodyType = RigidbodyType2D.Dynamic;
-		reduceColliderSize();
+
 		owner = script;
 		c2d.isTrigger = true;
 
@@ -193,7 +198,7 @@ public class RockScript : MonoBehaviour {
 			other.gameObject.GetComponent<KinematicPlayer>().GetHit(other.relativeVelocity);
 		}
 
-		if (other.gameObject.CompareTag("Rock")) {
+		if (other.gameObject.CompareTag("Rock") && destroyOther) {
 			Instantiate(destroyParticles, transform.position, destroyParticles.transform.rotation);
 			Destroy(other.gameObject);
 		}
@@ -201,7 +206,6 @@ public class RockScript : MonoBehaviour {
 		// Get destroyed
 		Camera.main.GetComponent<CameraShake>().shake(isBig);
 		Instantiate(destroyParticles, transform.position, destroyParticles.transform.rotation);
-		//StartCoroutine("DestroyNextFrame");
 		Destroy(gameObject);
 		AudioSource.PlayClipAtPoint(destroySound, transform.position, 10f);
 	}
