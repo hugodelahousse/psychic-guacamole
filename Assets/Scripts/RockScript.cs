@@ -204,7 +204,7 @@ public class RockScript : MonoBehaviour {
 		}
 
 		// Get destroyed
-		Camera.main.GetComponent<CameraShake>().shake(isBig);
+		//Camera.main.GetComponent<CameraShake>().shake(isBig);
 		Instantiate(destroyParticles, transform.position, destroyParticles.transform.rotation);
 		Destroy(gameObject);
 		AudioSource.PlayClipAtPoint(destroySound, transform.position, 10f);

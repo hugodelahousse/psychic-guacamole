@@ -109,11 +109,7 @@ public class KinematicPlayer : MonoBehaviour
 
 	private void Update()
 	{
-		velocity.x = Input.GetAxisRaw(getPlayerKey("Horizontal")) * speed;
-
-		//Debug.DrawRay(transform.position, new Vector2(Input.GetAxisRaw(getPlayerKey("Vertical")), Input.GetAxisRaw(getPlayerKey("Horizontal"))), Color.green);
-
-		if (stunned) velocity.x = 0;
+		if (!stunned) velocity.x = Input.GetAxisRaw(getPlayerKey("Horizontal")) * speed;
 
 		if ((((grounded || !doubleJumped) && lastJumpTime + jumpTimer < Time.time) 
 			|| coyoteTime + coyoteTimer > Time.time) 
@@ -125,10 +121,6 @@ public class KinematicPlayer : MonoBehaviour
 			velocity.y = jumpForce;
 			lastJumpTime = Time.time;
 		}
-
-		//if (coyoteTime + 0.1f > Time.time && Input.GetButtonDown(getPlayerKey("Jump"))) Debug.Log("jumped during coyote time");
-
-		//if (coyoteTime + 0.1f > Time.time) Debug.Log("coy");
 
 		if (Input.GetButtonDown(getPlayerKey("Punch")))
 		{
@@ -143,18 +135,7 @@ public class KinematicPlayer : MonoBehaviour
 
 	void FixedUpdate () 
 	{
-		//RaycastHit2D[] intersects  = new RaycastHit2D[16];
-		//if (rb2d.Cast(Vector2.zero, intersects) > 0) transform.position += Vector3.up * 3;
-
 		// ! NEED TO ACCOUNT FOR THE FEW CASES WHERE YOU SPAWN IN SOMETHING !
-
-		onWall = Physics2D.OverlapCircle(wallChecker.position, 0.25f, groundLayer);
-		if (onWall)
-		{
-			anim.SetBool("OnWall", true);
-			doubleJumped = false;
-		}
-		else anim.SetBool("OnWall", false);
 
 		velocity += gravityModifier * Physics2D.gravity * Time.deltaTime;
 		Vector2 deltaPosition = velocity * Time.deltaTime;
@@ -165,6 +146,15 @@ public class KinematicPlayer : MonoBehaviour
 		Move(move, false); // horizontal movement
 		move = Vector2.up * deltaPosition;
 		Move(move, true);  // vertical movement
+
+		onWall = Physics2D.OverlapCircle(wallChecker.position, 0.25f, groundLayer);
+
+		if (onWall)
+		{
+			anim.SetBool("OnWall", true);
+			doubleJumped = false;
+		}
+		else anim.SetBool("OnWall", false);
 
 		if (lastGrounded != grounded)
 		{
@@ -194,11 +184,23 @@ public class KinematicPlayer : MonoBehaviour
 				hitBufferList.Add(hitBuffer[i]);
 			}
 
+			// bounce when stunned
+			if (stunned && hitBufferList.Count > 0) 
+			{
+				//Debug.Log(velocity.magnitude);
+				if (yMove) velocity.y = Vector2.Reflect(velocity, hitBuffer[0].normal).y;
+				else velocity.x = Vector2.Reflect(velocity, hitBufferList[0].normal).x;
+			}
+
 			for (int i = 0; i < hitBufferList.Count; i++)
 			{
-				if (yMove)
+				if (yMove && !stunned)
 				{
-					if (hitBufferList[i].normal.y > 0.9) grounded = true;
+					if (hitBufferList[i].normal.y > 0.9f)
+					{
+						grounded = true;
+					}
+
 					velocity.y = 0;
 				}
 
@@ -207,6 +209,7 @@ public class KinematicPlayer : MonoBehaviour
 			}
 		}
 
+		//Debug.DrawRay(transform.position, move.normalized * distance, Color.white, 2f);
 		rb2d.position = rb2d.position + move.normalized * distance;
 	}
 
@@ -376,17 +379,11 @@ public class KinematicPlayer : MonoBehaviour
 
 	IEnumerator Stun(Vector2 direction)
 	{
+		//Debug.DrawRay(transform.position, direction.normalized * 5f, Color.red, 3f);
 		stunned = true;
-		float t = 0;
-		while(t < stunTime)
-		{
-			t += Time.deltaTime / stunTime;
-			float x = 1 - (t / stunTime);
-			velocity = Vector2.zero;
-			velocity += direction * x;
+		velocity = direction * 0.3f;
 
-			yield return null;
-		}
+		yield return new WaitForSeconds(stunTime);
 
 		stunned = false;
 	}
@@ -395,7 +392,7 @@ public class KinematicPlayer : MonoBehaviour
 	{
 		gc.onPlayerDie(playerNumber);
 		if (selectedRock) selectedRock.highlighted = 0;
-		Camera.main.GetComponent<Camera2D>().RemoveFocus(this.GetComponent<GameEye2D.Focus.F_Transform>());
+		Camera.main.GetComponent<CameraFocus>().RemoveFocus(transform);
 		AudioSource.PlayClipAtPoint(deathClip, transform.position, 10f);
 		Destroy(gameObject);
 	}

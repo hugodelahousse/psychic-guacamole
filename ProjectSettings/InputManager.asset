@@ -19,8 +19,8 @@ InputManager:
     snap: 1
     invert: 0
     type: 0
-    axis: 10
-    joyNum: 1
+    axis: 8
+    joyNum: 3
   - serializedVersion: 3
     m_Name: Player1Vertical
     descriptiveName: 
@@ -35,8 +35,8 @@ InputManager:
     snap: 1
     invert: 0
     type: 0
-    axis: 11
-    joyNum: 1
+    axis: 9
+    joyNum: 3
   - serializedVersion: 3
     m_Name: Player1Jump
     descriptiveName: 
@@ -44,7 +44,7 @@ InputManager:
     negativeButton: 
     positiveButton: c
     altNegativeButton: 
-    altPositiveButton: joystick 1 button 0
+    altPositiveButton: joystick 3 button 0
     gravity: 1000
     dead: 0.001
     sensitivity: 1000
@@ -60,7 +60,7 @@ InputManager:
     negativeButton: 
     positiveButton: v
     altNegativeButton: 
-    altPositiveButton: joystick 1 button 1
+    altPositiveButton: joystick 3 button 1
     gravity: 1000
     dead: 0.001
     sensitivity: 1000
@@ -92,7 +92,7 @@ InputManager:
     negativeButton: 
     positiveButton: left shift
     altNegativeButton: 
-    altPositiveButton: joystick 1 button 5
+    altPositiveButton: joystick 3 button 5
     gravity: 1000
     dead: 0.001
     sensitivity: 1000
@@ -163,8 +163,8 @@ InputManager:
     snap: 1
     invert: 0
     type: 0
-    axis: 10
-    joyNum: 2
+    axis: 8
+    joyNum: 4
   - serializedVersion: 3
     m_Name: Player2Vertical
     descriptiveName: 
@@ -179,8 +179,8 @@ InputManager:
     snap: 1
     invert: 0
     type: 0
-    axis: 11
-    joyNum: 2
+    axis: 9
+    joyNum: 4
   - serializedVersion: 3
     m_Name: Player2Jump
     descriptiveName: 
@@ -188,7 +188,7 @@ InputManager:
     negativeButton: 
     positiveButton: m
     altNegativeButton: 
-    altPositiveButton: joystick 2 button 0
+    altPositiveButton: joystick 4 button 0
     gravity: 1000
     dead: 0.001
     sensitivity: 1000
@@ -204,7 +204,7 @@ InputManager:
     negativeButton: 
     positiveButton: ','
     altNegativeButton: 
-    altPositiveButton: joystick 2 button 1
+    altPositiveButton: joystick 4 button 1
     gravity: 1000
     dead: 0.001
     sensitivity: 1000

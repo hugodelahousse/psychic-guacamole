@@ -76,8 +76,8 @@ public class GameController : MonoBehaviour {
 		Vector2 spawn = findSpawnPoint();
 		AudioSource.PlayClipAtPoint(respawnClip, spawn, 1f);
 		GameObject newPlayer = Instantiate(playerPrefab[playerIndex], spawn + Vector2.up * 2f, Quaternion.identity);
-        GameEye2D.Focus.F_Transform F_Transform = newPlayer.GetComponent<GameEye2D.Focus.F_Transform>();
-        Camera.main.GetComponent<Camera2D>().AddFocus(F_Transform);
+        //GameEye2D.Focus.F_Transform F_Transform = newPlayer.GetComponent<GameEye2D.Focus.F_Transform>();
+		Camera.main.GetComponent<CameraFocus>().AddFocus(newPlayer.transform);
 	}
 
 	
