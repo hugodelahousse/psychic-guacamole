@@ -46,7 +46,7 @@ public class CameraFocus : MonoBehaviour
 
 	Vector3 GetCenterPoint()
 	{
-		if (focusTargets.Count == 1) return focusTargets[0].position;
+		if (focusTargets.Count == 1) return new Vector3(focusTargets[0].position.x, offset.y);
 		
 		Bounds bounds = new Bounds(focusTargets[0].position, Vector3.zero);
 
