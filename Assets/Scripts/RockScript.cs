@@ -29,12 +29,12 @@ public class RockScript : MonoBehaviour {
 	public float smallForceRadius;
 	public float constantForceRadius;
 	public float smallForce;
-	public float constantForce;
+	public float constForce;
 	public float destroyTime;
 
     private Color startColor;
 	private Rigidbody2D rb2d;
-	private SpriteRenderer renderer;
+	private SpriteRenderer sr;
 
 	private KinematicPlayer owner;
 
@@ -49,6 +49,9 @@ public class RockScript : MonoBehaviour {
 	// public so we can do physics2d.ignore collision in the player punch function and get the offset of the block
 	[HideInInspector]
 	public BoxCollider2D c2d;
+
+	[HideInInspector]
+	public DestroyObject otherObject;
 
 	public int highlighted {
 		get {
@@ -66,11 +69,13 @@ public class RockScript : MonoBehaviour {
 
 	void Awake () {
 		destroyOther = true;
-		renderer = GetComponent<SpriteRenderer>();
+		sr = GetComponent<SpriteRenderer>();
 		c2d = GetComponent<BoxCollider2D>();
 		rb2d = GetComponent<Rigidbody2D>();
 
-		if (randomSprite) renderer.sprite = spritePool[Random.Range(0, spritePool.Length)];
+		if (randomSprite) sr.sprite = spritePool[Random.Range(0, spritePool.Length)];
+
+		otherObject = GetComponent<DestroyObject>();
 	}
 	
 	// Update is called once per frame
@@ -128,7 +133,7 @@ public class RockScript : MonoBehaviour {
 				{
 					if (aimAssistTarget[i].gameObject != owner.gameObject && aimAssistTarget[i].CompareTag("Player"))
 					{
-						rb2d.AddForce((aimAssistTarget[i].transform.position - centerPosition).normalized * constantForce, ForceMode2D.Impulse);
+						rb2d.AddForce((aimAssistTarget[i].transform.position - centerPosition).normalized * constForce, ForceMode2D.Impulse);
 						rb2d.velocity = rb2d.velocity.normalized * pushSpeed;
 					}
 				}
@@ -136,7 +141,7 @@ public class RockScript : MonoBehaviour {
 				{
 					if (aimAssistTarget[i].CompareTag("Player"))
 					{
-						rb2d.AddForce((aimAssistTarget[i].transform.position - centerPosition).normalized * constantForce, ForceMode2D.Impulse);
+						rb2d.AddForce((aimAssistTarget[i].transform.position - centerPosition).normalized * constForce, ForceMode2D.Impulse);
 						rb2d.velocity = rb2d.velocity.normalized * pushSpeed;
 					}
 				}
@@ -174,6 +179,8 @@ public class RockScript : MonoBehaviour {
 		owner = script;
 		c2d.isTrigger = true;
 
+		if (otherObject) otherObject.DestoryObject();
+
 		return true;
 	}
 
@@ -200,6 +207,8 @@ public class RockScript : MonoBehaviour {
 
 		if (other.gameObject.CompareTag("Rock") && destroyOther) {
 			Instantiate(destroyParticles, transform.position, destroyParticles.transform.rotation);
+
+			if (other.gameObject.GetComponent<RockScript>().otherObject) other.gameObject.GetComponent<RockScript>().otherObject.DestoryObject();
 			Destroy(other.gameObject);
 		}
 
